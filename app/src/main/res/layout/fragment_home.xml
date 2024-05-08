@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".navigation.HomeFragment">
+
+    <!-- 첫 번째 버튼 -->
+    <Button
+        android:id="@+id/btn_AIAnalyze"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AI 분석"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="48dp"/>
+
+    <!-- 두 번째 버튼 -->
+    <Button
+        android:id="@+id/btn_associatedHospital"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="제휴 병원"
+        android:layout_below="@id/btn_AIAnalyze"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"/>
+
+</RelativeLayout>
