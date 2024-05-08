@@ -13,13 +13,19 @@
         android:theme="@style/Theme.ChalKaDOC"
         tools:targetApi="31">
         <activity
-            android:name=".common.MainActivity"
+            android:name=".common.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+        </activity>
+        <activity
+            android:name=".common.MainActivity"
+            android:exported="true">
+
         </activity>
     </application>
 
