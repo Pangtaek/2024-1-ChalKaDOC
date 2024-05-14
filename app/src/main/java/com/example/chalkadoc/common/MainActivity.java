@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.chalkadoc.R;
-import com.example.chalkadoc.navigation.AssociationFragment;
+import com.example.chalkadoc.navigation.PartndershipFragment;
 import com.example.chalkadoc.navigation.HomeFragment;
 import com.example.chalkadoc.navigation.MyPageFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
     private HomeFragment homeFragment;
-    private AssociationFragment associationFragment;
+    private PartndershipFragment partndershipFragment;
     private MyPageFragment myPageFragment;
 
     @Override
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
                     case 2:
                         getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.container, associationFragment)
+                                .replace(R.id.container, partndershipFragment)
                                 .commit();
                         return true; // 각 case가 실행된 후에 switch 문을 종료하고자 return true를 추가합니다.
 
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (item.getItemId() == R.id.home)
             result = 1;
-        if (item.getItemId() == R.id.association)
+        if (item.getItemId() == R.id.partnership)
             result = 2;
         if (item.getItemId() == R.id.mypage)
             result = 3;
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     private void init(){
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         homeFragment = new HomeFragment();
-        associationFragment = new AssociationFragment();
+        partndershipFragment = new PartndershipFragment();
         myPageFragment = new MyPageFragment();
 
         // FragmentManager를 통해 Fragment 트랜잭션을 시작합니다.
