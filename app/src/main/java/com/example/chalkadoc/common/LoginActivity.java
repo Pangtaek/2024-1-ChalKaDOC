@@ -30,7 +30,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 public class LoginActivity extends AppCompatActivity {
     private EditText editText_username;
     private EditText editText_password;
-    private TextView textViev_signup;
+    private TextView textView_signup;
     private Button btn_loginButton;
     private SignInButton btn_GoogleLogIn;
     private FirebaseAuth firebaseAuth;
@@ -75,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         // 회원가입 텍스트뷰를 눌렀을 때
-        textViev_signup.setOnClickListener(new View.OnClickListener() {
+        textView_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
@@ -89,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
         editText_password = findViewById(R.id.password);
         btn_loginButton = findViewById(R.id.loginButton);
         btn_GoogleLogIn = findViewById(R.id.btn_google_sign_in);
-        textViev_signup = findViewById(R.id.textView_sign_up);
+        textView_signup = findViewById(R.id.textView_sign_up);
         // 파이어베이스 인증 객체 선언
         firebaseAuth = FirebaseAuth.getInstance();
 

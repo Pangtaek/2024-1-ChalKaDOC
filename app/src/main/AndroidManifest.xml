@@ -17,6 +17,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ChalKaDOC"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
+
+        <activity
+            android:name=".common.PartnershipActivity"
+            android:exported="false" />
+
         <activity
             android:name=".common.RegisterActivity"
             android:exported="false" />
