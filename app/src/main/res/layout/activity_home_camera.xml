@@ -64,7 +64,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/box_style"
+        android:background="@drawable/card_border_3"
         >
 
         <ImageButton
@@ -94,7 +94,7 @@
         android:layout_height="70dp"
         android:layout_gravity="center"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/box_style"
+        android:background="@drawable/card_border_3"
         >
 
         <ImageButton
@@ -124,7 +124,7 @@
         android:layout_height="70dp"
         android:layout_gravity="center"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/box_style"
+        android:background="@drawable/card_border_3"
         >
 
         <ImageButton
@@ -154,7 +154,7 @@
         android:layout_height="70dp"
         android:layout_gravity="center"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/box_style"
+        android:background="@drawable/card_border_3"
         >
 
         <ImageButton

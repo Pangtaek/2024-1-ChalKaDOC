@@ -31,5 +31,6 @@ public class HomeCameraActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
+        });
     }
 }

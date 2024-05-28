@@ -53,7 +53,7 @@
 
 
                     <ImageView
-                        android:id="@+id/cameraImage"
+                        android:id="@+id/iv_camera"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
@@ -92,7 +92,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                     <ImageView
-                        android:id="@+id/allianceImage"
+                        android:id="@+id/iv_partnership"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
