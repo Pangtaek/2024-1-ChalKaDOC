@@ -1,7 +1,8 @@
-package com.example.chalkadoc.common;
+package com.example.chalkadoc.login;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.chalkadoc.R;
+import com.example.chalkadoc.common.MainActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -51,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplication(), MainActivity.class);
             startActivity(intent);
             finish();
+            Log.d("Login", "Google Login Success!!!");
         }
 
         // 로그인 버튼을 눌렀을 때

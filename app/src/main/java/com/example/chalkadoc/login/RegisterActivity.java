@@ -1,4 +1,4 @@
-package com.example.chalkadoc.common;
+package com.example.chalkadoc.login;
 
 import android.os.Bundle;
 

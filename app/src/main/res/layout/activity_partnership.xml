@@ -11,18 +11,23 @@
 
     <fragment
         android:id="@+id/map"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        tools:context=".MapsActivity"
         android:name="com.google.android.gms.maps.SupportMapFragment" />
+
+    <View
+        android:id="@+id/drag_handle"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="#CCCCCC"
+        android:cursorVisible="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
 
     <ListView
         android:id="@+id/listView_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"/>
-
 </LinearLayout>

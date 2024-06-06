@@ -8,6 +8,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.chalkadoc.R;
+import com.example.chalkadoc.login.LoginActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
