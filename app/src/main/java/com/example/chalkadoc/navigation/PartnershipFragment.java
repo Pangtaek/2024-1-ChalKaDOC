@@ -51,8 +51,8 @@ public class PartnershipFragment extends Fragment {
                 // ListData 객체를 생성하고 JSON 데이터를 사용하여 초기화합니다.
                 ListData listData = new ListData();
                 listData.title = jsonObject.getString("이름");
-                listData.body_1 = jsonObject.getString("제휴정보");
-                listData.body_2 = jsonObject.getString("제휴 신청 방법");
+                listData.body_1 = jsonObject.getString("카테고리");
+                listData.body_2 = jsonObject.getString("주소");
                 listData.imageUrl = jsonObject.getString("병원 이미지 링크");
 
                 // 리스트에 추가합니다.
