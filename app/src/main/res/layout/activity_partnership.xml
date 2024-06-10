@@ -1,33 +1,163 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".common.PartnershipActivity"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".common.PartnershipActivity">
 
+    <!-- Google Map Fragment를 화면에 표시 -->
     <fragment
         android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:name="com.google.android.gms.maps.SupportMapFragment" />
+        android:layout_height="match_parent" />
 
-    <View
-        android:id="@+id/drag_handle"
+    <!-- 버튼들을 포함하는 LinearLayout을 화면 상단에 위치시킴 -->
+    <LinearLayout
+        android:id="@+id/buttonLayout"
         android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="#CCCCCC"
-        android:cursorVisible="true"
-        android:focusable="true"
-        android:focusableInTouchMode="true" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/card_border_4"
+        android:elevation="4dp"
+        android:padding="8dp"
+        android:layout_gravity="top">
 
-    <ListView
-        android:id="@+id/listView_list"
+        <Button
+            android:id="@+id/btn_eye_clinic"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:text="안과"
+            android:textColor="#000000"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:background="#FFFFFF"
+            android:id="@+id/btn_dermatology"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:textColor="#000000"
+            android:textSize="15sp"
+            android:layout_weight="1"
+            android:text="피부과" />
+
+        <!-- 치과 버튼 -->
+        <Button
+            android:id="@+id/btn_dentist"
+            android:background="#FFFFFF"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:textColor="#000000"
+            android:textSize="15sp"
+            android:layout_weight="1"
+            android:text="치과" />
+
+    </LinearLayout>
+
+    <!-- Bottom Sheet Layout을 포함 -->
+    <!--    <LinearLayout-->
+    <!--        android:id="@+id/bottom_sheet"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:orientation="vertical"-->
+    <!--        android:padding="16dp"-->
+    <!--        android:background="#FFFFFF"-->
+    <!--        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">-->
+
+    <!--        <TextView-->
+    <!--            android:id="@+id/hospital_name"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="병원 이름"-->
+    <!--            android:textSize="18sp"-->
+    <!--            android:textStyle="bold" />-->
+
+    <!--        <TextView-->
+    <!--            android:id="@+id/hospital_address"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="병원 주소"-->
+    <!--            android:layout_marginTop="8dp" />-->
+
+    <!--        <TextView-->
+    <!--            android:id="@+id/hospital_phone"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="병원 전화번호"-->
+    <!--            android:layout_marginTop="8dp" />-->
+
+    <!--        <TextView-->
+    <!--            android:id="@+id/hospital_hours"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="카테고리"-->
+    <!--            android:layout_marginTop="8dp" />-->
+    <!--    </LinearLayout>-->
+
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/card_border_4"
+        android:orientation="vertical"
+        android:layout_gravity="end"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="80dp"
+        android:padding="8dp">
+
+        <!-- 줌 인 버튼 -->
+        <Button
+            android:id="@+id/zoom_in_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+" />
+
+        <!-- 줌 아웃 버튼 -->
+        <Button
+            android:id="@+id/zoom_out_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-" />
+    </LinearLayout>
+
+    <!-- Bottom Sheet Layout을 포함하는 LinearLayout -->
+    <LinearLayout
+        android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#FFFFFF"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        app:behavior_peekHeight="300dp">
+
+        <!-- Drag Handle -->
+        <View
+            android:id="@+id/drag_handle"
+            android:layout_width="match_parent"
+            android:layout_height="23dp"
+            android:background="@drawable/card_border_4"
+            android:cursorVisible="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:rotation="72" />
+
+        <!-- ListView at the bottom -->
+        <ListView
+            android:id="@+id/listView_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/card_border_4"/>
+    </LinearLayout>
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
