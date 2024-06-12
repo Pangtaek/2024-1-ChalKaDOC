@@ -1,6 +1,6 @@
 package com.example.chalkadoc.listview;
 
-public class Eyes {
+public class EyesData {
     private String 이름;
     private String 카테고리;
     private String 도로명주소;
@@ -8,8 +8,7 @@ public class Eyes {
     private String 일반전화;
     private String 영업시간;
     private String 썸네일이미지URL;
-
-    private String 방문자_리뷰수;
+    private int 방문자_리뷰수;
     private int 블로그_리뷰수;
     private int 총_리뷰수;
     private double 위도;
@@ -18,7 +17,6 @@ public class Eyes {
     private String 홈페이지URL;
     private int 사진리뷰수;
     private String 상세페이지URL;
-
     private boolean isFromJhospitals;
 
     // Getters and Setters
@@ -79,15 +77,10 @@ public class Eyes {
     }
 
     public int get방문자_리뷰수() {
-        // 문자열을 정수로 변환
-        try {
-            return Integer.parseInt(방문자_리뷰수);
-        } catch (NumberFormatException e) {
-            return 0;
-        }
+        return 방문자_리뷰수;
     }
 
-    public void set방문자_리뷰수(String 방문자_리뷰수) {
+    public void set방문자_리뷰수(int 방문자_리뷰수) {
         this.방문자_리뷰수 = 방문자_리뷰수;
     }
 
@@ -100,8 +93,7 @@ public class Eyes {
     }
 
     public int get총_리뷰수() {
-        return 총_리뷰수;
-    }
+        return 총_리뷰수;    }
 
     public void set총_리뷰수(int 총_리뷰수) {
         this.총_리뷰수 = 총_리뷰수;

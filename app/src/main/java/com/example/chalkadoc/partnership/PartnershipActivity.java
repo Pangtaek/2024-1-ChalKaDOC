@@ -1,4 +1,4 @@
-package com.example.chalkadoc.common;
+package com.example.chalkadoc.partnership;
 
 import android.Manifest;
 import android.content.Intent;
@@ -6,23 +6,26 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.PopupMenu;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+
 import com.example.chalkadoc.R;
-import com.example.chalkadoc.listview.Eyes;
+import com.example.chalkadoc.home.HospitalInfoActivity;
+import com.example.chalkadoc.listview.EyesData;
 import com.example.chalkadoc.listview.HospitalAdapter;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -38,6 +41,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -47,7 +51,6 @@ import java.util.List;
 import java.util.Map;
 import java.io.InputStream;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 public class PartnershipActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -59,8 +62,8 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
     private boolean firstLocationUpdate = true;
     private BottomSheetBehavior<View> bottomSheetBehavior;
     private TextView hospitalName, hospitalAddress, hospitalPhone, hospitalHours;
-    private Map<Marker, Eyes> markerEyesMap = new HashMap<>();
-    private List<Eyes> hospitalList = new ArrayList<>();
+    private Map<Marker, EyesData> markerEyesMap = new HashMap<>();
+    private List<EyesData> hospitalList = new ArrayList<>();
     private HospitalAdapter listAdapter;
     private Location currentLocation; // 현재 위치를 저장할 변수
 
@@ -77,14 +80,15 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
 
         Button zoomInButton = findViewById(R.id.zoom_in_button);
         Button zoomOutButton = findViewById(R.id.zoom_out_button);
-        Button btnEyeClinic = findViewById(R.id.btn_eye_clinic);
-        Button btnDermatology = findViewById(R.id.btn_dermatology);
-        Button btnDentist = findViewById(R.id.btn_dentist);
+        Button btnDistance = findViewById(R.id.btn_distance);
+        Button btnRecommend = findViewById(R.id.btn_recommend);
+        Button btnAround = findViewById(R.id.btn_around);
+
+        ImageView ivOption = findViewById(R.id.iv_option);
 
         View bottomSheet = findViewById(R.id.bottom_sheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
         bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -118,32 +122,50 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
             }
         });
 
-        btnEyeClinic.setOnClickListener(new View.OnClickListener() {
+
+
+        ivOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleBottomSheet();
-                loadMarkersFromJson(R.raw.eyes, BitmapDescriptorFactory.HUE_RED);
-                loadHospitalNamesFromJson(R.raw.eyes);
+                PopupMenu popupMenu = new PopupMenu(PartnershipActivity.this, v); // v는 클릭된 뷰를 의미
+                // 메뉴 인플레이터를 사용하여 팝업 메뉴에 메뉴 리소스를 추가
+                popupMenu.getMenuInflater().inflate(R.menu.option_menu, popupMenu.getMenu());
+
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (getSelectedMenu(item)) {
+                            case 1:
+                                // 안과
+                                toggleBottomSheet();
+                                loadMarkersFromJson(R.raw.eyes, BitmapDescriptorFactory.HUE_RED);
+                                loadHospitalNamesFromJson(R.raw.eyes);
+                                break;
+                            case 2:
+                                // 피부과
+                                toggleBottomSheet();
+                                loadMarkersFromJson(R.raw.skin, BitmapDescriptorFactory.HUE_GREEN);
+                                loadHospitalNamesFromJson(R.raw.skin);
+                                break;
+                            case 3:
+                                // 치과
+                                toggleBottomSheet();
+                                loadMarkersFromJson(R.raw.teeth, BitmapDescriptorFactory.HUE_ORANGE);
+                                loadHospitalNamesFromJson(R.raw.teeth);
+                                break;
+                            default:
+                                Toast.makeText(getApplication(), "선택하지 않음", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                        return false;
+                    }
+                });
+
+                popupMenu.show();
             }
         });
 
-        btnDermatology.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toggleBottomSheet();
-                loadMarkersFromJson(R.raw.skin, BitmapDescriptorFactory.HUE_GREEN);
-                loadHospitalNamesFromJson(R.raw.skin);
-            }
-        });
 
-        btnDentist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toggleBottomSheet();
-                loadMarkersFromJson(R.raw.teeth, BitmapDescriptorFactory.HUE_ORANGE);
-                loadHospitalNamesFromJson(R.raw.teeth);
-            }
-        });
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -206,7 +228,7 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Eyes selectedHospital = (Eyes) listAdapter.getItem(position);
+                EyesData selectedHospital = (EyesData) listAdapter.getItem(position);
                 Intent intent = new Intent(PartnershipActivity.this, HospitalInfoActivity.class);
                 intent.putExtra("hospital_name", selectedHospital.get이름());
                 intent.putExtra("hospital_address", selectedHospital.get도로명주소());
@@ -227,7 +249,7 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
     private void loadHospitalNamesFromJson(int jsonResourceId) {
         try {
             // jhospitals.json 파일의 병원 목록을 로드합니다.
-            List<Eyes> jhospitals = loadJhospitals();
+            List<EyesData> jhospitals = loadJhospitals();
 
             // 병원 리스트 초기화
             hospitalList.clear();
@@ -237,12 +259,13 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
             String json = new java.util.Scanner(inputStream).useDelimiter("\\A").next();
 
             Gson gson = new Gson();
-            Type listType = new TypeToken<List<Eyes>>() {}.getType();
-            List<Eyes> clinics = gson.fromJson(json, listType);
+            Type listType = new TypeToken<List<EyesData>>() {}.getType();
+            List<EyesData> clinics = gson.fromJson(json, listType);
 
             if (currentLocation != null) {
                 LatLng currentLatLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-                for (Eyes clinic : clinics) {
+                for (EyesData clinic : clinics) {
+                    Log.d("PartnershipActivity", "Hospital: " + clinic.get이름() + ", Visitor Reviews: " + clinic.get방문자_리뷰수());
                     LatLng clinicLatLng = new LatLng(clinic.get위도(), clinic.get경도());
                     float distance = calculateDistance(currentLatLng, clinicLatLng);
                     if (distance <= 2000) { // 2km 이내의 병원
@@ -260,7 +283,7 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
             listAdapter.notifyDataSetChanged();
 
             // 병원 리스트 로깅
-            for (Eyes clinic : hospitalList) {
+            for (EyesData clinic : hospitalList) {
                 Log.d("PartnershipActivity", "Hospital: " + clinic.get이름() + ", Visitor Reviews: " + clinic.get방문자_리뷰수());
             }
         } catch (Exception e) {
@@ -268,18 +291,18 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
         }
     }
 
-    private List<Eyes> loadJhospitals() {
-        List<Eyes> jhospitals = new ArrayList<>();
+    private List<EyesData> loadJhospitals() {
+        List<EyesData> jhospitals = new ArrayList<>();
         try {
             InputStream inputStream = getResources().openRawResource(R.raw.jhospitals);
             String json = new java.util.Scanner(inputStream).useDelimiter("\\A").next();
 
             Gson gson = new Gson();
-            Type listType = new TypeToken<List<Eyes>>() {}.getType();
+            Type listType = new TypeToken<List<EyesData>>() {}.getType();
             jhospitals = gson.fromJson(json, listType);
 
             // jhospitals 리스트의 병원에 flag 추가
-            for (Eyes hospital : jhospitals) {
+            for (EyesData hospital : jhospitals) {
                 hospital.setFromJhospitals(true);
                 Log.d("PartnershipActivity", "Jhospitals: " + hospital.get이름() + ", Visitor Reviews: " + hospital.get방문자_리뷰수());
             }
@@ -295,17 +318,17 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
             String json = new java.util.Scanner(inputStream).useDelimiter("\\A").next();
 
             Gson gson = new Gson();
-            Type listType = new TypeToken<List<Eyes>>() {}.getType();
-            List<Eyes> clinics = gson.fromJson(json, listType);
+            Type listType = new TypeToken<List<EyesData>>() {}.getType();
+            List<EyesData> clinics = gson.fromJson(json, listType);
 
             mMap.clear(); // 기존 마커 제거
             markerEyesMap.clear();
 
             // jhospitals.json 파일의 병원 목록을 마커에 추가
-            List<Eyes> jhospitals = loadJhospitals();
+            List<EyesData> jhospitals = loadJhospitals();
             clinics.addAll(jhospitals);
 
-            for (Eyes clinic : clinics) {
+            for (EyesData clinic : clinics) {
                 LatLng clinicLatLng = new LatLng(clinic.get위도(), clinic.get경도());
                 Marker marker = mMap.addMarker(new MarkerOptions()
                         .position(clinicLatLng)
@@ -336,12 +359,12 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
             @Override
             public boolean onMarkerClick(Marker marker) {
                 try {
-                    Eyes eyeClinic = markerEyesMap.get(marker);
+                    EyesData eyeClinic = markerEyesMap.get(marker);
                     if (eyeClinic != null) {
-                        hospitalName = findViewById(R.id.hospital_name);
-                        hospitalAddress = findViewById(R.id.hospital_address);
-                        hospitalPhone = findViewById(R.id.hospital_phone);
-                        hospitalHours = findViewById(R.id.hospital_hours);
+                        hospitalName = findViewById(R.id.partnership_name);
+                        hospitalAddress = findViewById(R.id.partnership_address);
+//                        hospitalPhone = findViewById(R.id.partnership_phone);
+//                        hospitalHours = findViewById(R.id.partnership_hours);
 
                         hospitalName.setText(eyeClinic.get이름() != null ? eyeClinic.get이름() : "N/A");
                         hospitalAddress.setText(eyeClinic.get도로명주소() != null ? eyeClinic.get도로명주소() : "N/A");
@@ -444,4 +467,20 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
         firstLocationUpdate = true;
         getDeviceLocation();
     }
+
+    // 0 == 선택x     1 == 안과     2 == 피부과    3 == 치과
+    private int getSelectedMenu(@NonNull MenuItem item) {
+        int result = 0;
+
+        if (item.getItemId() == R.id.opt_ophthalmology)
+            result = 1;
+        if (item.getItemId() == R.id.opt_dermatology)
+            result = 2;
+        if (item.getItemId() == R.id.opt_dentist)
+            result = 3;
+
+        return result;
+    }
 }
+
+

@@ -9,12 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.chalkadoc.R;
-import com.example.chalkadoc.common.HomeCameraActivity;
-import com.example.chalkadoc.common.MainActivity;
-import com.example.chalkadoc.common.PartnershipActivity;
+import com.example.chalkadoc.home.HomeCameraActivity;
+import com.example.chalkadoc.partnership.PartnershipActivity;
 
 public class HomeFragment extends Fragment {
     private ImageView iv_camera;
@@ -32,7 +30,8 @@ public class HomeFragment extends Fragment {
         iv_camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Camera clicked!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), HomeCameraActivity.class);
+                startActivity(intent);
             }
         });
 

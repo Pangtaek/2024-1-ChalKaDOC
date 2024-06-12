@@ -15,15 +15,15 @@ import com.example.chalkadoc.R;
 import java.util.List;
 
 
-public class HospitalAdapter extends ArrayAdapter<Eyes> {
+public class HospitalAdapter extends ArrayAdapter<EyesData> {
 
-    public HospitalAdapter(Context context, List<Eyes> hospitals) {
+    public HospitalAdapter(Context context, List<EyesData> hospitals) {
         super(context, 0, hospitals);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Eyes hospital = getItem(position);
+        EyesData hospital = getItem(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.customlistview, parent, false);

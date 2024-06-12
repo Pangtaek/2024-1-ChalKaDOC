@@ -27,11 +27,35 @@
 
     <ImageView
         android:layout_width="380dp"
-        android:layout_height="500dp"
+        android:layout_height="425dp"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
-        android:layout_marginBottom="5dp"
-        android:background="@drawable/card_border_3" />
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/card_border_1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/ic_add_photo_album_24" />
+
+        <ImageButton
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginEnd="40dp"
+            android:background="@drawable/ic_camera_24" />
+
+
+    </LinearLayout>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -39,22 +63,12 @@
         android:orientation="horizontal"
         android:gravity="center">
 
-        <android.widget.Button
-            android:id="@+id/cameraCheckbtn"
-            android:layout_width="132dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/square_background_border_blue"
-            android:text="확인 후 촬영 시작"
-            android:textColor="@color/white" />
 
         <android.widget.Button
             android:id="@+id/cameraCheckStart"
             android:layout_width="132dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
             android:background="@drawable/square_background_border_blue"
             android:text="촬영 결과 보기"
             android:textColor="@color/white" />

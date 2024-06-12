@@ -1,4 +1,4 @@
-package com.example.chalkadoc.common;
+package com.example.chalkadoc.navigation;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -10,9 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.chalkadoc.R;
-import com.example.chalkadoc.navigation.PartnershipFragment;
-import com.example.chalkadoc.navigation.HomeFragment;
-import com.example.chalkadoc.navigation.MyPageFragment;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;

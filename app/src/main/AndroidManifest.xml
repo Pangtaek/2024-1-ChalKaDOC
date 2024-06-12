@@ -19,19 +19,28 @@
         android:theme="@style/Theme.ChalKaDOC"
         tools:targetApi="31">
         <activity
+            android:name=".home.HomeCameraDetailResultActivity"
+            android:exported="false" />
+        <activity
+            android:name=".mypage.UserInformationModifyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".mypage.HospitalRecordActivity"
+            android:exported="false" />
+        <activity
             android:name=".listview.CustomListView"
             android:exported="false" />
         <activity
-            android:name=".common.HospitalInfoActivity"
+            android:name=".home.HospitalInfoActivity"
             android:exported="false" />
         <activity
-            android:name=".common.HomeCameraResult"
+            android:name=".home.HomeCameraResultActivity"
             android:exported="false" />
         <activity
-            android:name=".common.HomeCameraActivity"
+            android:name=".home.HomeCameraActivity"
             android:exported="false" />
         <activity
-            android:name=".common.PartnershipActivity"
+            android:name=".partnership.PartnershipActivity"
             android:exported="false" />
         <activity
             android:name=".login.RegisterActivity"
@@ -46,16 +55,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".common.AIAnalysisActivity"
+            android:name=".home.AIAnalysisActivity"
             android:exported="false" />
         <activity
             android:name=".login.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".common.MainActivity"
+            android:name=".navigation.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".common.HomeCameraTakePicture"
+            android:name=".home.HomeCameraTakePictureActivity"
             android:exported="true" />
 
         <meta-data

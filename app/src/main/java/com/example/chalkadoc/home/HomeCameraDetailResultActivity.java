@@ -1,4 +1,4 @@
-package com.example.chalkadoc.common;
+package com.example.chalkadoc.home;
 
 import android.os.Bundle;
 
@@ -10,13 +10,13 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.chalkadoc.R;
 
-public class AIAnalysisActivity extends AppCompatActivity {
+public class HomeCameraDetailResultActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_aianalysis);
+        setContentView(R.layout.activity_home_camera_detail_result);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);

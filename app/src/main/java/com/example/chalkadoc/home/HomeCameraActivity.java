@@ -1,4 +1,4 @@
-package com.example.chalkadoc.common;
+package com.example.chalkadoc.home;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,9 +7,6 @@ import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.chalkadoc.R;
 
@@ -27,7 +24,7 @@ public class HomeCameraActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 // 이동 페이지 추후 추가 예정
-                Intent intent = new Intent(HomeCameraActivity.this, MainActivity.class);
+                Intent intent = new Intent(HomeCameraActivity.this, HomeCameraTakePictureActivity.class);
                 startActivity(intent);
                 finish();
             }

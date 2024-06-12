@@ -1,6 +1,7 @@
 package com.example.chalkadoc.navigation;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.chalkadoc.R;
+import com.example.chalkadoc.home.HospitalInfoActivity;
 import com.example.chalkadoc.listview.CustomListView;
 import com.example.chalkadoc.listview.ListData;
 
@@ -70,6 +72,11 @@ public class PartnershipFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String clickedItemName = listViewData.get(position).title;
                 Log.d("Check", "Name: " + clickedItemName);
+
+                // HospitalInfoActivity로 이동
+                Intent intent = new Intent(getActivity(), HospitalInfoActivity.class);
+                intent.putExtra("hospital_name", clickedItemName);
+                startActivity(intent);
             }
         });
 
