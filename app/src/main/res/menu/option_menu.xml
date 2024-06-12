@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/opt_ophthalmology"
+        android:id="@+id/btn_eye_clinic"
         android:title="안과" />
     <item
-        android:id="@+id/opt_dermatology"
+        android:id="@+id/btn_dermatology"
         android:title="피부과"/>
     <item
-        android:id="@+id/opt_dentist"
+        android:id="@+id/btn_dentist"
         android:title="치과"/>
 </menu>

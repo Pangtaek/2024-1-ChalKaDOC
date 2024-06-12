@@ -47,10 +47,10 @@ public class CustomListView extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.customlistview, parent, false);
         }
 
-        TextView title = convertView.findViewById(R.id.title);
-        TextView body_1 = convertView.findViewById(R.id.body_1);
-        TextView body_2 = convertView.findViewById(R.id.body_2);
-        ImageView mainImage = convertView.findViewById(R.id.mainImage); // ImageView 가져오기
+        TextView title = convertView.findViewById(R.id.partnership_name);
+        TextView body_1 = convertView.findViewById(R.id.partnership_address);
+        TextView body_2 = convertView.findViewById(R.id.partnership_info);
+
 
         ListData listData = listViewData.get(position);
 
@@ -59,11 +59,11 @@ public class CustomListView extends BaseAdapter {
         body_2.setText(listData.body_2);
 
         // Glide를 사용하여 이미지 로드
-        Glide.with(context)
-                .load(listData.imageUrl)
-                .placeholder(R.drawable.ic_run_24) // 이미지가 로드되는 동안 표시할 플레이스홀더 이미지
-                .error(R.drawable.ic_error_outline_24) // 이미지 로드 실패 시 표시할 이미지
-                .into(mainImage);
+//        Glide.with(context)
+//                .load(listData.imageUrl)
+//                .placeholder(R.drawable.ic_run_24) // 이미지가 로드되는 동안 표시할 플레이스홀더 이미지
+//                .error(R.drawable.ic_error_outline_24) // 이미지 로드 실패 시 표시할 이미지
+//                .into(mainImage);
 
         return convertView;
     }

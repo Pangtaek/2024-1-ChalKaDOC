@@ -25,9 +25,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ChalKaDOC"
         tools:targetApi="31">
-        <activity
-            android:name=".home.HomeCameraResultActivity_2"
-            android:exported="false" />
+
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -59,6 +57,9 @@
             android:exported="false" />
         <activity
             android:name=".home.HomeCameraResultActivity_1"
+            android:exported="false" />
+        <activity
+            android:name=".home.HomeCameraResultActivity_2"
             android:exported="false" />
         <activity
             android:name=".home.HomeCameraActivity"

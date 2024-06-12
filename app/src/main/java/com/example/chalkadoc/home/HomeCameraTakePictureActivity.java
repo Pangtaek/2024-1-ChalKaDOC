@@ -59,6 +59,7 @@ public class HomeCameraTakePictureActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (ContextCompat.checkSelfPermission(HomeCameraTakePictureActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                     openCamera();
+                    Toast.makeText(getApplicationContext(), "사진은 재촬영이 가능합니다.", Toast.LENGTH_SHORT);
                 } else {
                     ActivityCompat.requestPermissions(HomeCameraTakePictureActivity.this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST_CODE);
                 }

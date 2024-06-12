@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,9 +33,10 @@ public class HomeCameraResultActivity_1 extends AppCompatActivity {
 
     private ImageView imageView;
     private TextView resultTextView;
+    private TextView rTview;
     private Interpreter tflite;
 
-    private static final String TAG = "HomeCameraResultActivity_1";
+    private static final String TAG = "ResultActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,7 @@ public class HomeCameraResultActivity_1 extends AppCompatActivity {
 
         imageView = findViewById(R.id.iv_camera);
         resultTextView = findViewById(R.id.tv_eyes_result);
+        rTview = findViewById(R.id.tv_skin_result);
 
         String imageUriString = getIntent().getStringExtra("imageUri");
         if (imageUriString != null) {
@@ -59,8 +62,7 @@ public class HomeCameraResultActivity_1 extends AppCompatActivity {
                         tflite = new Interpreter(loadModelFile());
                         Log.d(TAG, "TensorFlow Lite 모델 로드 성공");
 
-                        String result = analyzeImage(bitmap);
-                        resultTextView.setText(result);
+                        analyzeImage(bitmap);
                     } else {
                         throw new Exception("InputStream is null");
                     }
@@ -113,7 +115,7 @@ public class HomeCameraResultActivity_1 extends AppCompatActivity {
         }
     }
 
-    private String analyzeImage(Bitmap bitmap) {
+    private void analyzeImage(Bitmap bitmap) {
         try {
             // 이미지 리사이즈
             int inputImageWidth = 320;
@@ -153,63 +155,112 @@ public class HomeCameraResultActivity_1 extends AppCompatActivity {
             textPaint.setColor(Color.RED);
             textPaint.setTextSize(24);
 
-            String[] labels = {"백내장", "포도막염", "익상편", "다래끼", "블랙헤드", "면포성여드름", "습진", "농포성여드름", "주사"};
+            String[] eyeDiseaseLabels = {"백내장", "포도막염", "익상편", "다래끼"};
+            String[] skinDiseaseLabels = {"블랙헤드", "면포성여드름", "습진", "농포성여드름", "주사"};
 
-            // 가장 높은 확률의 객체 찾기
-            int maxIndex = -1;
-            float maxProbability = -1.0f;
+            // 최종 결과 저장할 변수
+            String highestConfidenceEyeDiseaseLabel = null;
+            int highestConfidenceEyeDiseasePercent = 0;
+            float[] highestConfidenceEyeDiseaseBox = null;
 
+            String highestConfidenceSkinDiseaseLabel = null;
+            int highestConfidenceSkinDiseasePercent = 0;
+            float[] highestConfidenceSkinDiseaseBox = null;
+
+            // 임계값 설정
+            float threshold = 0.5f;
+
+            // 결과 표시용 문자열 생성
             for (int i = 0; i < 6300; i++) {
                 float objectProbability = output[0][i][4]; // 객체 확률
-                if (objectProbability > maxProbability) {
-                    maxProbability = objectProbability;
-                    maxIndex = i;
+                if (objectProbability >= threshold) {
+                    // 클래스 확률과 경계 상자 좌표 추출
+                    int classIndex = -1;
+                    float maxClassProbability = -1.0f;
+                    for (int j = 5; j < 14; j++) {
+                        float classProbability = output[0][i][j];
+                        if (classProbability > maxClassProbability) {
+                            maxClassProbability = classProbability;
+                            classIndex = j - 5; // 클래스 인덱스 조정
+                        }
+                    }
+
+                    // 결과에 추가
+                    if (classIndex != -1) {
+                        int confidencePercent = (int) (objectProbability * 100);
+                        if (classIndex < 4) { // Eye disease
+                            if (confidencePercent > highestConfidenceEyeDiseasePercent) {
+                                highestConfidenceEyeDiseasePercent = confidencePercent;
+                                highestConfidenceEyeDiseaseLabel = eyeDiseaseLabels[classIndex];
+                                highestConfidenceEyeDiseaseBox = new float[]{
+                                        output[0][i][0] * inputImageWidth,
+                                        output[0][i][1] * inputImageHeight,
+                                        output[0][i][2] * inputImageWidth,
+                                        output[0][i][3] * inputImageHeight
+                                };
+                            }
+                        } else { // Skin disease
+                            if (confidencePercent > highestConfidenceSkinDiseasePercent) {
+                                highestConfidenceSkinDiseasePercent = confidencePercent;
+                                highestConfidenceSkinDiseaseLabel = skinDiseaseLabels[classIndex - 4];
+                                highestConfidenceSkinDiseaseBox = new float[]{
+                                        output[0][i][0] * inputImageWidth,
+                                        output[0][i][1] * inputImageHeight,
+                                        output[0][i][2] * inputImageWidth,
+                                        output[0][i][3] * inputImageHeight
+                                };
+                            }
+                        }
+                    }
                 }
             }
 
-            if (maxIndex == -1) {
-                return "유효한 예측 결과를 찾지 못했습니다.";
+            // 최종 결과 그리기
+            if (highestConfidenceEyeDiseaseLabel != null) {
+                float centerX = highestConfidenceEyeDiseaseBox[0];
+                float centerY = highestConfidenceEyeDiseaseBox[1];
+                float width = highestConfidenceEyeDiseaseBox[2];
+                float height = highestConfidenceEyeDiseaseBox[3];
+
+                float left = centerX - (width / 2);
+                float top = centerY - (height / 2);
+                float right = centerX + (width / 2);
+                float bottom = centerY + (height / 2);
+
+                // 경계 상자와 클래스 이름 그리기
+                canvas.drawRect(left, top, right, bottom, paint);
+                canvas.drawText(highestConfidenceEyeDiseaseLabel, left, top - 10, textPaint);
+            } else {
+                highestConfidenceEyeDiseaseLabel = "결과 없음";
             }
 
-            // 클래스 확률과 경계 상자 좌표 추출
-            int classIndex = -1;
-            float maxClassProbability = -1.0f;
-            for (int j = 5; j < 14; j++) {
-                float classProbability = output[0][maxIndex][j];
-                if (classProbability > maxClassProbability) {
-                    maxClassProbability = classProbability;
-                    classIndex = j - 5; // 클래스 인덱스 조정
-                }
+            if (highestConfidenceSkinDiseaseLabel != null) {
+                float centerX = highestConfidenceSkinDiseaseBox[0];
+                float centerY = highestConfidenceSkinDiseaseBox[1];
+                float width = highestConfidenceSkinDiseaseBox[2];
+                float height = highestConfidenceSkinDiseaseBox[3];
+
+                float left = centerX - (width / 2);
+                float top = centerY - (height / 2);
+                float right = centerX + (width / 2);
+                float bottom = centerY + (height / 2);
+
+                // 경계 상자와 클래스 이름 그리기
+                canvas.drawRect(left, top, right, bottom, paint);
+                canvas.drawText(highestConfidenceSkinDiseaseLabel, left, top - 10, textPaint);
+            } else {
+                highestConfidenceSkinDiseaseLabel = "결과 없음";
             }
-
-            if (classIndex == -1) {
-                return "유효하지 않은 클래스 인덱스";
-            }
-
-            // 경계 상자 좌표 추출
-            float centerX = output[0][maxIndex][0] * inputImageWidth;
-            float centerY = output[0][maxIndex][1] * inputImageHeight;
-            float width = output[0][maxIndex][2] * inputImageWidth;
-            float height = output[0][maxIndex][3] * inputImageHeight;
-
-            float left = centerX - (width / 2);
-            float top = centerY - (height / 2);
-            float right = centerX + (width / 2);
-            float bottom = centerY + (height / 2);
-
-            // 경계 상자와 클래스 이름 그리기
-            canvas.drawRect(left, top, right, bottom, paint);
-            canvas.drawText(labels[classIndex], left, top - 10, textPaint);
 
             imageView.setImageBitmap(mutableBitmap);
-            return "예측: " + labels[classIndex];
+            resultTextView.setText(highestConfidenceEyeDiseaseLabel + " (" + highestConfidenceEyeDiseasePercent + "%)");
+            rTview.setText(highestConfidenceSkinDiseaseLabel + " (" + highestConfidenceSkinDiseasePercent + "%)");
         } catch (Exception e) {
             Log.e(TAG, "TensorFlow Lite 모델 실행 실패", e);
-            return "분석 실패";
+            resultTextView.setText("분석 실패");
+            rTview.setText("분석 실패");
         }
     }
-
-
 
     @Override
     protected void onDestroy() {

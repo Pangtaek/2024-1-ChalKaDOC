@@ -43,7 +43,7 @@ public class HomeCameraResultActivity_2 extends AppCompatActivity {
         setContentView(R.layout.activity_home_camera_result_2);
 
         imageView = findViewById(R.id.iv_camera);
-        resultTextView = findViewById(R.id.tv_eyes_result);
+        resultTextView = findViewById(R.id.tv_teeth_result);
         tv_detailPage = findViewById(R.id.tv_detailResult);
 
         tv_detailPage.setOnClickListener(new View.OnClickListener() {
@@ -142,6 +142,9 @@ public class HomeCameraResultActivity_2 extends AppCompatActivity {
 
             String[] labels = {"잇몸부종", "치석", "충치", "부정교합", "치아착색"};
 
+            // 결과를 저장할 변수
+            String result = "분석 실패";
+
             // 가장 높은 확률의 객체 찾기
             int maxIndex = -1;
             float maxProbability = -1.0f;
@@ -154,44 +157,49 @@ public class HomeCameraResultActivity_2 extends AppCompatActivity {
                 }
             }
 
-            if (maxIndex == -1) {
-                return "유효한 예측 결과를 찾지 못했습니다.";
-            }
+            // 임계값 설정
+            float threshold = 0.5f;
 
-            // 가장 높은 확률을 가진 객체의 클래스 정보 추출
-            int classIndex = -1;
-            float maxClassProbability = -1.0f;
-            for (int j = 5; j < 10; j++) {
-                float classProbability = output[0][maxIndex][j];
-                if (classProbability > maxClassProbability) {
-                    maxClassProbability = classProbability;
-                    classIndex = j - 5; // 클래스 인덱스를 맞추기 위해 5를 뺍니다.
+            if (maxIndex != -1 && maxProbability >= threshold) {
+                // 가장 높은 확률을 가진 객체의 클래스 정보 추출
+                int classIndex = -1;
+                float maxClassProbability = -1.0f;
+                for (int j = 5; j < 10; j++) {
+                    float classProbability = output[0][maxIndex][j];
+                    if (classProbability > maxClassProbability) {
+                        maxClassProbability = classProbability;
+                        classIndex = j - 5; // 클래스 인덱스를 맞추기 위해 5를 뺍니다.
+                    }
                 }
+
+                if (classIndex != -1) {
+                    // 경계 상자 좌표 추출
+                    float centerX = output[0][maxIndex][0] * inputImageWidth;
+                    float centerY = output[0][maxIndex][1] * inputImageHeight;
+                    float width = output[0][maxIndex][2] * inputImageWidth;
+                    float height = output[0][maxIndex][3] * inputImageHeight;
+
+                    float left = centerX - (width / 2);
+                    float top = centerY - (height / 2);
+                    float right = centerX + (width / 2);
+                    float bottom = centerY + (height / 2);
+
+                    // 경계 상자 그리기
+                    canvas.drawRect(left, top, right, bottom, paint);
+
+                    // 클래스 이름 그리기
+                    canvas.drawText(labels[classIndex], left, top - 10, textPaint);
+
+                    result = "예측: " + labels[classIndex] + " (" + (int) (maxClassProbability * 100) + "%)";
+                }
+            } else {
+                // 임계값 이상의 객체가 없는 경우
+                result = "결과 없음";
             }
 
-            if (classIndex == -1) {
-                return "유효하지 않은 클래스 인덱스";
-            }
-
-            // 경계 상자 좌표 추출
-            float centerX = output[0][maxIndex][0] * inputImageWidth;
-            float centerY = output[0][maxIndex][1] * inputImageHeight;
-            float width = output[0][maxIndex][2] * inputImageWidth;
-            float height = output[0][maxIndex][3] * inputImageHeight;
-
-            float left = centerX - (width / 2);
-            float top = centerY - (height / 2);
-            float right = centerX + (width / 2);
-            float bottom = centerY + (height / 2);
-
-            // 경계 상자 그리기
-            canvas.drawRect(left, top, right, bottom, paint);
-
-            // 클래스 이름 그리기
-            canvas.drawText(labels[classIndex], left, top - 10, textPaint);
-
+            // 결과 반환
             imageView.setImageBitmap(mutableBitmap);
-            return "예측: " + labels[classIndex];
+            return result;
         } catch (Exception e) {
             Log.e(TAG, "TensorFlow Lite 모델 실행 실패", e);
             return "분석 실패";
