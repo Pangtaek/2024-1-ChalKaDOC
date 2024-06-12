@@ -98,7 +98,7 @@ public class HomeCameraTakePictureActivity extends AppCompatActivity {
             try {
                 File imageFile = saveBitmapToFile(selectedBitmap);
                 Uri imageUri = FileProvider.getUriForFile(this, "com.example.ai_face.fileprovider", imageFile);
-                Intent intent = new Intent(HomeCameraTakePictureActivity.this, HomeCameraResultActivity.class);
+                Intent intent = new Intent(HomeCameraTakePictureActivity.this, HomeCameraResultActivity_1.class);
                 intent.putExtra("imageUri", imageUri.toString());
                 Log.d(TAG, "Starting ResultActivity with imageUri: " + imageUri.toString());
                 startActivity(intent);

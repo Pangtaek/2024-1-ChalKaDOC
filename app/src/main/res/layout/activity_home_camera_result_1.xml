@@ -24,7 +24,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_margin="10dp"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
@@ -41,7 +41,7 @@
                 android:layout_width="109dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="30dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="40dp"
                 android:gravity="center"
                 android:text="분석 결과"
                 android:textColor="@color/blue"
@@ -51,16 +51,16 @@
             <ImageView
                 android:layout_width="35dp"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="40dp"
                 android:background="@drawable/ic_auto_graph_24" />
         </LinearLayout>
 
         <ImageView
             android:id="@+id/iv_camera"
-            android:layout_width="330dp"
-            android:layout_height="273dp"
+            android:layout_width="327dp"
+            android:layout_height="269dp"
             android:layout_gravity="center"
-            android:layout_marginTop="1dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/card_border_3"
             android:scaleType="centerCrop" />
 
@@ -72,7 +72,7 @@
             <TextView
                 android:layout_width="56dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginStart="40dp"
                 android:gravity="center"
                 android:text="안구"
@@ -83,7 +83,7 @@
                 android:id="@+id/tv_eyes_result"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginStart="10dp"
                 android:gravity="center"
                 android:text="-"
@@ -98,7 +98,7 @@
             <TextView
                 android:layout_width="56dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginStart="40dp"
                 android:gravity="center"
                 android:text="피부"
@@ -109,7 +109,7 @@
                 android:id="@+id/iv_skin_result"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginStart="10dp"
                 android:gravity="center"
                 android:text="-"
@@ -124,7 +124,7 @@
             <TextView
                 android:layout_width="56dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginStart="40dp"
                 android:gravity="center"
                 android:text="치아"
@@ -135,32 +135,25 @@
                 android:id="@+id/iv_teeth_result"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginStart="10dp"
                 android:gravity="center"
                 android:text="-"
                 android:textSize="20sp" />
         </LinearLayout>
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="170dp"
-            android:layout_marginTop="15dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <!-- Add more content here if needed to demonstrate scrolling -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="이곳에 추가적인 증상 내용을 입력하세요."
-                    android:textSize="16sp" />
-            </LinearLayout>
-        </ScrollView>
+        <TextView
+            android:id="@+id/tv_detailResult"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/card_border_3"
+            android:gravity="center"
+            android:text="치아 검사하기"
+            android:textColor="#8e8e8e"
+            android:textSize="17dp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_goToMap"
