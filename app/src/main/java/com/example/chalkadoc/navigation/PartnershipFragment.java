@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-
 public class PartnershipFragment extends Fragment {
     private ListView listView;
 
@@ -55,10 +54,10 @@ public class PartnershipFragment extends Fragment {
                 eyesData.set이름(jsonObject.getString("이름"));
                 eyesData.set카테고리(jsonObject.getString("카테고리"));
                 eyesData.set주소(jsonObject.getString("주소"));
-//                eyesData.set병원_이미지_링크(jsonObject.getString("병원 이미지 링크"));
+                eyesData.set일반전화(jsonObject.getString("일반전화"));
+                eyesData.set영업시간(jsonObject.getString("영업시간"));
                 eyesData.set방문자_리뷰수(jsonObject.optString("방문자_리뷰수"));
                 eyesData.setPartnered(jsonObject.optBoolean("제휴병원", true));
-//                eyesData.setDistance(jsonObject.optDouble("distance", 0.0));
 
                 // 리스트에 추가합니다.
                 eyesDataList.add(eyesData);
@@ -73,12 +72,24 @@ public class PartnershipFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String clickedItemName = eyesDataList.get(position).get이름();
+                EyesData clickedItem = eyesDataList.get(position);
+                String clickedItemName = clickedItem.get이름();
+                String clickedItemCategory = clickedItem.get카테고리();
+                String clickedItemAddress = clickedItem.get주소();
+                String clickedItemPhone = clickedItem.get일반전화();
+                String clickedItemhours = clickedItem.get영업시간();
+                boolean isPartnered = clickedItem.isPartnered();
+
                 Log.d("Check", "Name: " + clickedItemName);
 
                 // HospitalInfoActivity로 이동
                 Intent intent = new Intent(getActivity(), HospitalInfoActivity.class);
                 intent.putExtra("hospital_name", clickedItemName);
+                intent.putExtra("hospital_category", clickedItemCategory);
+                intent.putExtra("hospital_address", clickedItemAddress);
+                intent.putExtra("is_partnered", isPartnered);
+                intent.putExtra("hospital_phone", clickedItemPhone);
+                intent.putExtra("hospital_hours", clickedItemhours);
                 startActivity(intent);
             }
         });
@@ -110,3 +121,5 @@ public class PartnershipFragment extends Fragment {
         return builder.toString();
     }
 }
+
+

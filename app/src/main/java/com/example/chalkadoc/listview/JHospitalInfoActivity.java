@@ -11,7 +11,6 @@ import com.example.chalkadoc.R;
 import com.example.chalkadoc.home.HospitalInfoActivity;
 
 public class JHospitalInfoActivity extends AppCompatActivity {
-
     private TextView partnershipName;
     private TextView partnershipAddress;
     private TextView partnershipInfo;

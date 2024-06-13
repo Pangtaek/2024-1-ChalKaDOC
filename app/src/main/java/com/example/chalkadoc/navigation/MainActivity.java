@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.chalkadoc.R;
 import com.example.chalkadoc.home.HomeCameraActivity;
+import com.example.chalkadoc.popup.CustomPopupActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -33,10 +34,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         init();
-        // Firebase 스토리지의 촬영 사진 폴더 안에 사진이 없으면 토스트 메시지 생성
+        // Firebase 스토리지의 촬영 사진 폴더 안에 사진이 없으면 커스텀 다이얼로그 표시
         checkIfPhotosExist();
-
-
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -99,17 +98,26 @@ public class MainActivity extends AppCompatActivity {
         photosRef.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
             @Override
             public void onSuccess(ListResult listResult) {
-                // Firebase storage의 /촬영사진 경로에 사진이 있는 경우
-                if (!listResult.getItems().isEmpty()) {
-
-                }
-                // Firebase storage의 /촬영사진 경로에 사진이 없는 경우 -> 촬영하도록 페이지 변경
-                else {
-                    Intent intent = new Intent(MainActivity.this, HomeCameraActivity.class);
-                    startActivity(intent);
-                    finish();
+                // Firebase storage의 /촬영사진 경로에 사진이 없는 경우 -> 커스텀 다이얼로그 표시
+                if (listResult.getItems().isEmpty()) {
+                    showCustomDialog();
                 }
             }
         });
+    }
+
+    private void showCustomDialog() {
+        CustomPopupActivity customPopupActivity = new CustomPopupActivity(this, "촬영하여 기록했던 사진이 없습니다.") {
+            @Override
+            public void onCreate(Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);
+                btn_yes.setOnClickListener(v -> {
+                    Intent intent = new Intent(MainActivity.this, HomeCameraActivity.class);
+                    startActivity(intent);
+                    finish();
+                });
+            }
+        };
+        customPopupActivity.show();
     }
 }

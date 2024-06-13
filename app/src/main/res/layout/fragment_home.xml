@@ -20,6 +20,7 @@
             android:layout_height="match_parent"
             android:layout_marginStart="176dp"
             android:text="HUB"
+            android:textStyle="bold"
             android:textColor="@color/blue"
             android:textSize="30sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -39,8 +40,8 @@
             android:layout_height="175dp"
             android:id="@+id/row1"
             android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:padding="10dp"
+            android:layout_marginTop="20dp"
+            android:padding="5dp"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -52,7 +53,7 @@
                 android:id="@+id/cameraCard"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                app:cardElevation="20dp"
+                app:cardElevation="5dp"
                 app:cardCornerRadius="20dp">
 
                 <RelativeLayout
@@ -65,7 +66,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_marginTop="2dp"
-                        android:src="@drawable/upload_camera"
+                        android:src="@drawable/ui_main_1"
                         android:clickable="true"
                         android:focusable="true" />
 
@@ -79,8 +80,7 @@
             android:layout_height="175dp"
             android:id="@+id/row2"
             android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:padding="10dp"
+            android:padding="5dp"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -92,8 +92,9 @@
                 android:id="@+id/allianceCard"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                app:cardElevation="20dp"
+                app:cardElevation="5dp"
                 app:cardCornerRadius="20dp">
+<!--                app:cardElevation="20dp"-->
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -104,7 +105,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:src="@drawable/upload_partnership"
+                        android:src="@drawable/ui_main_2"
                         android:clickable="true"
                         android:focusable="true"/>
 

@@ -37,17 +37,6 @@
             android:textStyle="bold"
             />
 
-        <android.widget.Button
-            android:background="@drawable/square_background_border_blue"
-            android:id="@+id/btn_recommend"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:textColor="#000000"
-            android:textSize="15sp"
-            android:layout_weight="1"
-            android:text="리뷰순" />
-
         <!-- 치과 버튼 -->
         <android.widget.Button
             android:id="@+id/btn_distance"

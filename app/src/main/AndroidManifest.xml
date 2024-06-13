@@ -71,6 +71,9 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".listview.JHospitalInfoActivity"
+            android:exported="false"/>
+        <activity
             android:name=".login.RegisterActivity"
             android:exported="false" />
         <activity

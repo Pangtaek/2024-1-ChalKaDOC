@@ -76,12 +76,10 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
         setContentView(R.layout.activity_partnership);
 
         ImageView ivOption = findViewById(R.id.iv_option);
-
         Button zoomInButton = findViewById(R.id.zoom_in_button);
         Button zoomOutButton = findViewById(R.id.zoom_out_button);
         Button btnDistance = findViewById(R.id.btn_distance);
         Button btnDistance2 = findViewById(R.id.btn_distance2);
-
         View bottomSheet = findViewById(R.id.bottom_sheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -103,6 +101,7 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
             }
         });
 
+        // 지도 줌인
         zoomInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,6 +111,7 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
             }
         });
 
+        // 지도 줌아웃
         zoomOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,8 +121,7 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
             }
         });
 
-
-
+        // 내 주변 버튼 클릭
         btnDistance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,6 +143,7 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
             }
         });
 
+        // 오른쪽 상단 옵션 버튼 클릭 -> 안과, 피부과, 치과 나옴
         ivOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -185,6 +185,7 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
             }
         });
 
+        // 거리순 버튼 클릭
         btnDistance2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -239,6 +240,7 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
         loadMarkersAndHospitals(R.raw.jhospitals, BitmapDescriptorFactory.HUE_RED);
     }
 
+    // 옵션에서 버튼 눌렀을 때 사용하는 메소드. 아이디 값에 따른 정수를 리턴함.
     private int getSelectedMenu(@NonNull MenuItem item) {
         int result = 0;
 
@@ -365,8 +367,6 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
         });
     }
 
-
-
     private float calculateDistance(LatLng start, LatLng end) {
         float[] results = new float[1];
         Location.distanceBetween(start.latitude, start.longitude, end.latitude, end.longitude, results);
@@ -439,7 +439,6 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
             Log.e("PartnershipActivity", "Error reading JSON file", e);
         }
     }
-
 
     // 기존의 loadMarkersAndHospitals 메서드 변경
     private void loadMarkersAndHospitals(int jsonResourceId, float color) {
