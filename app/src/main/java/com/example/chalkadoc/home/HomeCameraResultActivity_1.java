@@ -35,7 +35,12 @@ public class HomeCameraResultActivity_1 extends AppCompatActivity {
     private TextView rTview;
     private Interpreter tflite;
 
-    private static final String TAG = "ResultActivity";
+    private static final String TAG = "HomeCameraResultActivity_1";
+
+    private String highestConfidenceEyeDiseaseLabel;
+    private int highestConfidenceEyeDiseasePercent;
+    private String highestConfidenceSkinDiseaseLabel;
+    private int highestConfidenceSkinDiseasePercent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +100,10 @@ public class HomeCameraResultActivity_1 extends AppCompatActivity {
             // DentalActivity로 전달할 Intent 생성
             Intent intent = new Intent(HomeCameraResultActivity_1.this, HomeCameraResultActivity_2.class);
             intent.putExtra("imageUri", imageUri.toString());
+            intent.putExtra("eyeDiseaseLabel", highestConfidenceEyeDiseaseLabel);
+            intent.putExtra("eyeDiseaseConfidence", highestConfidenceEyeDiseasePercent);
+            intent.putExtra("skinDiseaseLabel", highestConfidenceSkinDiseaseLabel);
+            intent.putExtra("skinDiseaseConfidence", highestConfidenceSkinDiseasePercent);
 
             // DentalActivity 실행
             startActivity(intent);
@@ -158,16 +167,16 @@ public class HomeCameraResultActivity_1 extends AppCompatActivity {
             String[] skinDiseaseLabels = {"블랙헤드", "면포성여드름", "습진", "농포성여드름", "주사"};
 
             // 최종 결과 저장할 변수
-            String highestConfidenceEyeDiseaseLabel = null;
-            int highestConfidenceEyeDiseasePercent = 0;
+            highestConfidenceEyeDiseaseLabel = null;
+            highestConfidenceEyeDiseasePercent = 0;
             float[] highestConfidenceEyeDiseaseBox = null;
 
-            String highestConfidenceSkinDiseaseLabel = null;
-            int highestConfidenceSkinDiseasePercent = 0;
+            highestConfidenceSkinDiseaseLabel = null;
+            highestConfidenceSkinDiseasePercent = 0;
             float[] highestConfidenceSkinDiseaseBox = null;
 
             // 임계값 설정
-            float threshold = 0.5f;
+            float threshold = 0.3f;
 
             // 결과 표시용 문자열 생성
             for (int i = 0; i < 6300; i++) {

@@ -24,7 +24,11 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import com.example.chalkadoc.R;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -59,7 +63,6 @@ public class HomeCameraTakePictureActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (ContextCompat.checkSelfPermission(HomeCameraTakePictureActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                     openCamera();
-                    Toast.makeText(getApplicationContext(), "사진은 재촬영이 가능합니다.", Toast.LENGTH_SHORT);
                 } else {
                     ActivityCompat.requestPermissions(HomeCameraTakePictureActivity.this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST_CODE);
                 }
@@ -130,6 +133,13 @@ public class HomeCameraTakePictureActivity extends AppCompatActivity {
                     selectedBitmap = (Bitmap) data.getExtras().get("data");
                     imageView.setImageBitmap(selectedBitmap);
                     Log.d(TAG, "Camera image selected");
+
+                    // 2024. 06. 13. 임광택
+                    // 촬영한 사진을 FIrebase Storage에 저장
+                    uploadToFirebaseStorage(selectedBitmap);
+                    // 재촬영 가능하다는 토스트 메시지 출력
+                    Toast.makeText(getApplicationContext(), "촬영버튼으로 재촬영 가능", Toast.LENGTH_SHORT);
+
                     break;
                 case GALLERY_REQUEST_CODE:
                     Uri selectedImageUri = data.getData();
@@ -163,4 +173,34 @@ public class HomeCameraTakePictureActivity extends AppCompatActivity {
             Toast.makeText(this, "권한이 모두 허용되었습니다", Toast.LENGTH_SHORT).show();
         }
     }
+
+    private void uploadToFirebaseStorage(Bitmap image) {
+        // FirebaseStorage instance
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        // Reference to '촬영사진' folder
+        StorageReference storageRef = storage.getReference().child("촬영사진");
+        // Reference to the specific image file
+        StorageReference imageRef = storageRef.child("image_" + System.currentTimeMillis() + ".png");
+
+        // Convert bitmap to byte array
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        // Upload the byte array to Firebase Storage
+        UploadTask uploadTask = imageRef.putBytes(data);
+        uploadTask.addOnSuccessListener(taskSnapshot -> {
+            // Handle successful uploads
+            imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                // Handle the download URL here (if needed)
+                Log.d(TAG, "Image uploaded successfully. URL: " + uri.toString());
+                Toast.makeText(HomeCameraTakePictureActivity.this, "Image uploaded successfully", Toast.LENGTH_SHORT).show();
+            });
+        }).addOnFailureListener(e -> {
+            // Handle unsuccessful uploads
+            Log.e(TAG, "Image upload failed: ", e);
+            Toast.makeText(HomeCameraTakePictureActivity.this, "Image upload failed", Toast.LENGTH_SHORT).show();
+        });
+    }
 }
+

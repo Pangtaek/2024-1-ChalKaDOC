@@ -1,5 +1,6 @@
 package com.example.chalkadoc.navigation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.chalkadoc.R;
+import com.example.chalkadoc.home.HomeCameraActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -97,10 +99,15 @@ public class MainActivity extends AppCompatActivity {
         photosRef.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
             @Override
             public void onSuccess(ListResult listResult) {
+                // Firebase storage의 /촬영사진 경로에 사진이 있는 경우
                 if (!listResult.getItems().isEmpty()) {
-                    Toast.makeText(MainActivity.this, "촬영된 사진이 있습니다.", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(MainActivity.this, "촬영된 사진이 없습니다.", Toast.LENGTH_SHORT).show();
+
+                }
+                // Firebase storage의 /촬영사진 경로에 사진이 없는 경우 -> 촬영하도록 페이지 변경
+                else {
+                    Intent intent = new Intent(MainActivity.this, HomeCameraActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
             }
         });

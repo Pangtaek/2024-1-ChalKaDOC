@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -34,7 +35,17 @@ public class HomeCameraResultActivity_2 extends AppCompatActivity {
     private Interpreter tflite;
     private TextView tv_detailPage;
     public String resultToNextPage;
-    private static final String TAG = "ResultActivity";
+    private static final String TAG = "HomeCameraResultAcitivy_2";
+
+    private String eyeDiseaseLabel;
+    private int eyeDiseaseConfidence;
+    private String skinDiseaseLabel;
+    private int skinDiseaseConfidence;
+    private String dentalDiseaseLabel;
+    private float dentalDiseaseConfidence;
+
+    private int classIndex = -1;
+    private float maxClassProbability = -1.0f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +59,7 @@ public class HomeCameraResultActivity_2 extends AppCompatActivity {
         tv_detailPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeCameraResultActivity_2.this, HomeCameraDetailResultActivity.class);
-//                intent.putExtra("imageUri", resultToNextPage);
-
-                // DentalActivity 실행
-                startActivity(intent);
+                sendImageToAllResultActivity();
             }
         });
 
@@ -87,6 +94,11 @@ public class HomeCameraResultActivity_2 extends AppCompatActivity {
             resultTextView.setText("이미지 데이터가 없습니다");
             Log.e(TAG, "이미지 URI가 없습니다");
         }
+
+        eyeDiseaseLabel = getIntent().getStringExtra("eyeDiseaseLabel");
+        eyeDiseaseConfidence = getIntent().getIntExtra("eyeDiseaseConfidence", 0);
+        skinDiseaseLabel = getIntent().getStringExtra("skinDiseaseLabel");
+        skinDiseaseConfidence = getIntent().getIntExtra("skinDiseaseConfidence", 0);
     }
 
     private MappedByteBuffer loadModelFile() throws Exception {
@@ -161,8 +173,6 @@ public class HomeCameraResultActivity_2 extends AppCompatActivity {
 
             if (maxIndex != -1 && maxProbability >= threshold) {
                 // 가장 높은 확률을 가진 객체의 클래스 정보 추출
-                int classIndex = -1;
-                float maxClassProbability = -1.0f;
                 for (int j = 5; j < 10; j++) {
                     float classProbability = output[0][maxIndex][j];
                     if (classProbability > maxClassProbability) {
@@ -188,13 +198,16 @@ public class HomeCameraResultActivity_2 extends AppCompatActivity {
 
                     // 클래스 이름 그리기
                     canvas.drawText(labels[classIndex], left, top - 10, textPaint);
+                    dentalDiseaseLabel = labels[classIndex];
+                    dentalDiseaseConfidence = maxClassProbability * 100;
 
-                    result = "예측: " + labels[classIndex] + " (정확도: " + (int) (maxClassProbability * 100) + "%)";
+
                 }
             } else {
                 // 임계값 이상의 객체가 없는 경우
-                result = "결과 없음";
+                dentalDiseaseLabel = "결과 없음.";
             }
+            result = dentalDiseaseLabel + " (" + dentalDiseaseConfidence + "%)";
 
             // 결과 반환
             imageView.setImageBitmap(mutableBitmap);
@@ -205,6 +218,30 @@ public class HomeCameraResultActivity_2 extends AppCompatActivity {
         }
     }
 
+    private void sendImageToAllResultActivity() {
+        String imageUriString = getIntent().getStringExtra("imageUri");
+        if (imageUriString != null) {
+            Uri imageUri = Uri.parse(imageUriString);
+
+            // DentalActivity로 전달할 Intent 생성
+            Intent intent = new Intent(HomeCameraResultActivity_2.this, HomeCameraDetailResultActivity.class);
+            intent.putExtra("imageUri", imageUri.toString());
+            intent.putExtra("eyeDiseaseLabel", eyeDiseaseLabel);
+            intent.putExtra("eyeDiseaseConfidence", eyeDiseaseConfidence);
+            intent.putExtra("skinDiseaseLabel", skinDiseaseLabel);
+            intent.putExtra("skinDiseaseConfidence", skinDiseaseConfidence);
+            intent.putExtra("dentalDiseaseLabel", dentalDiseaseLabel);
+            intent.putExtra("dentalDiseaseConfidence", dentalDiseaseConfidence);
+
+
+            // DentalActivity 실행
+            startActivity(intent);
+            finish();
+        } else {
+            // 이미지 URI가 없는 경우 처리
+            Toast.makeText(HomeCameraResultActivity_2.this, "이미지 데이터가 없습니다", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     @Override
     protected void onDestroy() {

@@ -25,7 +25,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ChalKaDOC"
         tools:targetApi="31">
-
+        <activity
+            android:name=".popup.CustomPopupActivity"
+            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -66,7 +68,8 @@
             android:exported="false" />
         <activity
             android:name=".partnership.PartnershipActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".login.RegisterActivity"
             android:exported="false" />

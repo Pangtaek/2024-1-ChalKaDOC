@@ -220,7 +220,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="사진은 재촬영 가능"
+            android:text="촬영버튼으로 재촬영 가능"
             android:textColor="#8e8e8e"
             android:textSize="17dp"
             android:textStyle="bold" />

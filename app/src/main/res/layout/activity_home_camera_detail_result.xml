@@ -106,7 +106,7 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/iv_skin_result"
+                android:id="@+id/tv_skin_result"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
@@ -132,7 +132,7 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/iv_teeth_result"
+                android:id="@+id/tv_teeth_result"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
@@ -153,6 +153,7 @@
                 android:orientation="vertical">
                 <!-- Add more content here if needed to demonstrate scrolling -->
                 <TextView
+                    android:id="@+id/tv_symptom"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
