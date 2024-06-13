@@ -8,9 +8,7 @@ public class EyesData {
     private String 일반전화;
     private String 영업시간;
     private String 썸네일이미지URL;
-
     private float distance;
-
     private String 주소;
     private String 방문자_리뷰수;
     private int 블로그_리뷰수;
@@ -23,10 +21,9 @@ public class EyesData {
     private String 상세페이지URL;
     private String 제휴정보;
     private String 제휴_신청_방법;
-
     private boolean isFromJhospitals;
-
     private boolean isPartnered;
+
 
     // Getters and Setters
     public String get이름() {

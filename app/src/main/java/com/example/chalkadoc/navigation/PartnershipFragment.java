@@ -15,8 +15,8 @@ import android.widget.ListView;
 
 import com.example.chalkadoc.R;
 import com.example.chalkadoc.home.HospitalInfoActivity;
-import com.example.chalkadoc.listview.CustomListView;
-import com.example.chalkadoc.listview.ListData;
+import com.example.chalkadoc.listview.EyesData;
+import com.example.chalkadoc.listview.HospitalAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,7 +37,7 @@ public class PartnershipFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_partnership, container, false);
 
         listView = view.findViewById(R.id.listview);
-        ArrayList<ListData> listViewData = new ArrayList<>();
+        ArrayList<EyesData> eyesDataList = new ArrayList<>();
 
         // res/raw 폴더에서 JSON 파일을 읽습니다.
         String jsonData = loadJSONFromRaw(getContext(), R.raw.jhospitals);
@@ -50,27 +50,30 @@ public class PartnershipFragment extends Fragment {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                // ListData 객체를 생성하고 JSON 데이터를 사용하여 초기화합니다.
-                ListData listData = new ListData();
-                listData.title = jsonObject.getString("이름");
-                listData.body_1 = jsonObject.getString("카테고리");
-                listData.body_2 = jsonObject.getString("주소");
-                listData.imageUrl = jsonObject.getString("병원 이미지 링크");
+                // EyesData 객체를 생성하고 JSON 데이터를 사용하여 초기화합니다.
+                EyesData eyesData = new EyesData();
+                eyesData.set이름(jsonObject.getString("이름"));
+                eyesData.set카테고리(jsonObject.getString("카테고리"));
+                eyesData.set주소(jsonObject.getString("주소"));
+//                eyesData.set병원_이미지_링크(jsonObject.getString("병원 이미지 링크"));
+//                eyesData.set방문자_리뷰수(jsonObject.optInt("방문자_리뷰수", 0));
+                eyesData.setPartnered(jsonObject.optBoolean("제휴병원", true));
+//                eyesData.setDistance(jsonObject.optDouble("distance", 0.0));
 
                 // 리스트에 추가합니다.
-                listViewData.add(listData);
+                eyesDataList.add(eyesData);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        CustomListView customListViewAdapter = new CustomListView(listViewData, getContext());
-        listView.setAdapter(customListViewAdapter);
+        HospitalAdapter hospitalAdapter = new HospitalAdapter(getContext(), eyesDataList);
+        listView.setAdapter(hospitalAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String clickedItemName = listViewData.get(position).title;
+                String clickedItemName = eyesDataList.get(position).get이름();
                 Log.d("Check", "Name: " + clickedItemName);
 
                 // HospitalInfoActivity로 이동

@@ -56,11 +56,9 @@ import java.lang.reflect.Type;
 public class PartnershipActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     // yoon
-
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private LocationCallback locationCallback;
-
     private GoogleMap mMap;
     private LocationRequest locationRequest;
     private boolean firstLocationUpdate = true;
@@ -71,21 +69,6 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
     private HospitalAdapter listAdapter;
     private Location currentLocation; // 현재 위치를 저장할 변수
     private String currentCategory = ""; // 현재 선택된 카테고리 저장
-
-
-    private int getSelectedMenu(@NonNull MenuItem item) {
-        int result = 0;
-
-        if (item.getItemId() == R.id.btn_eye_clinic)
-            result = 1;
-        if (item.getItemId() == R.id.btn_dermatology)
-            result = 2;
-        if (item.getItemId() == R.id.btn_dentist)
-            result = 3;
-
-        return result;
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,11 +86,13 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
+        bottomSheetBehavior.setPeekHeight(300);
+
         bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                    bottomSheetBehavior.setPeekHeight(200);
+                    bottomSheetBehavior.setPeekHeight(300);
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 }
             }
@@ -157,7 +142,6 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
                         break;
                 }
             }
-
         });
 
         ivOption.setOnClickListener(new View.OnClickListener() {
@@ -255,7 +239,18 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
         loadMarkersAndHospitals(R.raw.jhospitals, BitmapDescriptorFactory.HUE_RED);
     }
 
+    private int getSelectedMenu(@NonNull MenuItem item) {
+        int result = 0;
 
+        if (item.getItemId() == R.id.btn_eye_clinic)
+            result = 1;
+        if (item.getItemId() == R.id.btn_dermatology)
+            result = 2;
+        if (item.getItemId() == R.id.btn_dentist)
+            result = 3;
+
+        return result;
+    }
 
     private void loadClosestMarkersAndHospitals(int jsonResourceId, float color) {
         try {
@@ -332,8 +327,6 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
             }
         });
     }
-
-
 
     private void toggleBottomSheet() {
         if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {

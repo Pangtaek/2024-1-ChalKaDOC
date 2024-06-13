@@ -57,6 +57,7 @@ public class HospitalAdapter extends BaseAdapter {
 
         if (hospital.isPartnered()) {
             hospitalType.setText("제휴병원");
+            hospitalType.setTextColor(Color.BLUE);
         } else {
             hospitalType.setText("일반병원");
             hospitalType.setTextColor(Color.BLACK);

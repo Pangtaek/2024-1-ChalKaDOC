@@ -252,8 +252,8 @@ public class HomeCameraResultActivity_1 extends AppCompatActivity {
             }
 
             imageView.setImageBitmap(mutableBitmap);
-            resultTextView.setText(highestConfidenceEyeDiseaseLabel + " (" + highestConfidenceEyeDiseasePercent + "%)");
-            rTview.setText(highestConfidenceSkinDiseaseLabel + " (" + highestConfidenceSkinDiseasePercent + "%)");
+            resultTextView.setText(highestConfidenceEyeDiseaseLabel + " (정확도: " + highestConfidenceEyeDiseasePercent + "%)");
+            rTview.setText(highestConfidenceSkinDiseaseLabel + " (정확도: " + highestConfidenceSkinDiseasePercent + "%)");
         } catch (Exception e) {
             Log.e(TAG, "TensorFlow Lite 모델 실행 실패", e);
             resultTextView.setText("분석 실패");

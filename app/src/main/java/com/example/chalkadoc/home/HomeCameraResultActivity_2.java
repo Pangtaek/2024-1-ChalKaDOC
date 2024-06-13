@@ -34,7 +34,6 @@ public class HomeCameraResultActivity_2 extends AppCompatActivity {
     private Interpreter tflite;
     private TextView tv_detailPage;
     public String resultToNextPage;
-
     private static final String TAG = "ResultActivity";
 
     @Override
@@ -190,7 +189,7 @@ public class HomeCameraResultActivity_2 extends AppCompatActivity {
                     // 클래스 이름 그리기
                     canvas.drawText(labels[classIndex], left, top - 10, textPaint);
 
-                    result = "예측: " + labels[classIndex] + " (" + (int) (maxClassProbability * 100) + "%)";
+                    result = "예측: " + labels[classIndex] + " (정확도: " + (int) (maxClassProbability * 100) + "%)";
                 }
             } else {
                 // 임계값 이상의 객체가 없는 경우
