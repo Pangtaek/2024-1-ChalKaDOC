@@ -8,7 +8,9 @@ public class EyesData {
     private String 일반전화;
     private String 영업시간;
     private String 썸네일이미지URL;
-    private int 방문자_리뷰수;
+    private float distance;
+    private String 주소;
+    private String 방문자_리뷰수;
     private int 블로그_리뷰수;
     private int 총_리뷰수;
     private double 위도;
@@ -17,7 +19,11 @@ public class EyesData {
     private String 홈페이지URL;
     private int 사진리뷰수;
     private String 상세페이지URL;
+    private String 제휴정보;
+    private String 제휴_신청_방법;
     private boolean isFromJhospitals;
+    private boolean isPartnered;
+
 
     // Getters and Setters
     public String get이름() {
@@ -76,13 +82,11 @@ public class EyesData {
         this.썸네일이미지URL = 썸네일이미지URL;
     }
 
-    public int get방문자_리뷰수() {
+    public String get방문자_리뷰수() {
         return 방문자_리뷰수;
     }
 
-    public void set방문자_리뷰수(int 방문자_리뷰수) {
-        this.방문자_리뷰수 = 방문자_리뷰수;
-    }
+    public void set방문자_리뷰수(String 방문자_리뷰수) { this.방문자_리뷰수 = 방문자_리뷰수; }
 
     public int get블로그_리뷰수() {
         return 블로그_리뷰수;
@@ -93,7 +97,8 @@ public class EyesData {
     }
 
     public int get총_리뷰수() {
-        return 총_리뷰수;    }
+        return 총_리뷰수;
+    }
 
     public void set총_리뷰수(int 총_리뷰수) {
         this.총_리뷰수 = 총_리뷰수;
@@ -153,5 +158,45 @@ public class EyesData {
 
     public void setFromJhospitals(boolean fromJhospitals) {
         isFromJhospitals = fromJhospitals;
+    }
+
+    public boolean isPartnered() {
+        return isPartnered;
+    }
+
+    public void setPartnered(boolean partnered){
+        isPartnered = partnered;
+    }
+
+    public String get제휴정보() {
+        return 제휴정보;
+    }
+
+    public void set제휴정보(String 제휴정보) {
+        this.제휴정보 = 제휴정보;
+    }
+
+    public String get제휴_신청_방법() {
+        return 제휴_신청_방법;
+    }
+
+    public void set제휴_신청_방법(String 제휴_신청_방법) {
+        this.제휴_신청_방법 = 제휴_신청_방법;
+    }
+
+    public void set주소(String 주소) {
+        this.주소 = 주소;
+    }
+
+    public String get주소(){
+        return 주소;
+    }
+
+    public float getDistance() {
+        return distance;
+    }
+
+    public void setDistance(float distance) {
+        this.distance = distance;
     }
 }

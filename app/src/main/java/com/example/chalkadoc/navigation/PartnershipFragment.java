@@ -15,8 +15,8 @@ import android.widget.ListView;
 
 import com.example.chalkadoc.R;
 import com.example.chalkadoc.home.HospitalInfoActivity;
-import com.example.chalkadoc.listview.CustomListView;
-import com.example.chalkadoc.listview.ListData;
+import com.example.chalkadoc.listview.EyesData;
+import com.example.chalkadoc.listview.HospitalAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-
 public class PartnershipFragment extends Fragment {
     private ListView listView;
 
@@ -37,7 +36,7 @@ public class PartnershipFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_partnership, container, false);
 
         listView = view.findViewById(R.id.listview);
-        ArrayList<ListData> listViewData = new ArrayList<>();
+        ArrayList<EyesData> eyesDataList = new ArrayList<>();
 
         // res/raw 폴더에서 JSON 파일을 읽습니다.
         String jsonData = loadJSONFromRaw(getContext(), R.raw.jhospitals);
@@ -50,32 +49,47 @@ public class PartnershipFragment extends Fragment {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                // ListData 객체를 생성하고 JSON 데이터를 사용하여 초기화합니다.
-                ListData listData = new ListData();
-                listData.title = jsonObject.getString("이름");
-                listData.body_1 = jsonObject.getString("카테고리");
-                listData.body_2 = jsonObject.getString("주소");
-                listData.imageUrl = jsonObject.getString("병원 이미지 링크");
+                // EyesData 객체를 생성하고 JSON 데이터를 사용하여 초기화합니다.
+                EyesData eyesData = new EyesData();
+                eyesData.set이름(jsonObject.getString("이름"));
+                eyesData.set카테고리(jsonObject.getString("카테고리"));
+                eyesData.set주소(jsonObject.getString("주소"));
+                eyesData.set일반전화(jsonObject.getString("일반전화"));
+                eyesData.set영업시간(jsonObject.getString("영업시간"));
+                eyesData.set방문자_리뷰수(jsonObject.optString("방문자_리뷰수"));
+                eyesData.setPartnered(jsonObject.optBoolean("제휴병원", true));
 
                 // 리스트에 추가합니다.
-                listViewData.add(listData);
+                eyesDataList.add(eyesData);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        CustomListView customListViewAdapter = new CustomListView(listViewData, getContext());
-        listView.setAdapter(customListViewAdapter);
+        HospitalAdapter hospitalAdapter = new HospitalAdapter(getContext(), eyesDataList);
+        listView.setAdapter(hospitalAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String clickedItemName = listViewData.get(position).title;
+                EyesData clickedItem = eyesDataList.get(position);
+                String clickedItemName = clickedItem.get이름();
+                String clickedItemCategory = clickedItem.get카테고리();
+                String clickedItemAddress = clickedItem.get주소();
+                String clickedItemPhone = clickedItem.get일반전화();
+                String clickedItemhours = clickedItem.get영업시간();
+                boolean isPartnered = clickedItem.isPartnered();
+
                 Log.d("Check", "Name: " + clickedItemName);
 
                 // HospitalInfoActivity로 이동
                 Intent intent = new Intent(getActivity(), HospitalInfoActivity.class);
                 intent.putExtra("hospital_name", clickedItemName);
+                intent.putExtra("hospital_category", clickedItemCategory);
+                intent.putExtra("hospital_address", clickedItemAddress);
+                intent.putExtra("is_partnered", isPartnered);
+                intent.putExtra("hospital_phone", clickedItemPhone);
+                intent.putExtra("hospital_hours", clickedItemhours);
                 startActivity(intent);
             }
         });
@@ -107,3 +121,5 @@ public class PartnershipFragment extends Fragment {
         return builder.toString();
     }
 }
+
+

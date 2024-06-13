@@ -19,6 +19,11 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildFeatures {
+        buildConfig = true
+        mlModelBinding true
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -29,6 +34,17 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    aaptOptions{
+        noCompress "tflite"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
 }
 
 dependencies {
@@ -38,6 +54,8 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.drawerlayout:drawerlayout:1.2.0'
     implementation 'com.google.android.material:material:1.13.0-alpha02'
+    implementation libs.tensorflow.lite.support
+    implementation libs.tensorflow.lite.metadata
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -60,6 +78,15 @@ dependencies {
     implementation('com.google.android.gms:play-services-location:21.2.0')
     implementation 'com.google.code.gson:gson:2.8.8'
     implementation 'com.google.android.material:material:1.4.0'
+
+    // jung
+    implementation("com.google.firebase:firebase-ml-modeldownloader")
+    implementation libs.tensorflow.lite.support
+    implementation libs.tensorflow.lite.metadata
+    implementation 'org.tensorflow:tensorflow-lite:+'
+    implementation 'org.tensorflow:tensorflow-lite-gpu:2.3.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.7.0'
+    implementation 'com.google.firebase:firebase-analytics'
 
     implementation libs.appcompat
     implementation libs.material
