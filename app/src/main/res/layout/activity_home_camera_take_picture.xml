@@ -74,6 +74,7 @@
             android:layout_gravity="center"
             android:background="@drawable/square_background_border_blue"
             android:text="촬영 결과 보기"
+            android:textStyle="bold"
             android:textColor="@color/white" />
 
 

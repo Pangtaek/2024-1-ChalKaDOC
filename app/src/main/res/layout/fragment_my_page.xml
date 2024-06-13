@@ -18,8 +18,8 @@
             android:id="@+id/ThumNail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="176dp"
-            android:text="HUB"
+            android:layout_marginStart="150dp"
+            android:text="찰카DOC"
             android:textStyle="bold"
             android:textColor="@color/blue"
             android:textSize="30sp"
@@ -49,7 +49,7 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
                 android:padding="10dp"
-                android:background="@drawable/card_border_2">
+                android:background="@drawable/card_border_5">
 
                 <TextView
                     android:id="@+id/hospitalrecord"
@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:text="방문 병원 기록"
                     android:layout_gravity="center"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textStyle="bold"
                     android:gravity="center"
                     android:textSize="17dp" />
@@ -70,7 +70,7 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
                 android:padding="10dp"
-                android:background="@drawable/card_border_2">
+                android:background="@drawable/card_border_5">
 
                 <TextView
                     android:id="@+id/myimformation"
@@ -78,7 +78,7 @@
                     android:layout_height="wrap_content"
                     android:text="회원 정보 수정"
                     android:layout_gravity="center"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:gravity="center"
                     android:textStyle="bold"
                     android:textSize="17dp" />
@@ -91,7 +91,7 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
                 android:padding="10dp"
-                android:background="@drawable/card_border_2"
+                android:background="@drawable/card_border_5"
                 android:orientation="vertical">
 
                 <TextView
@@ -100,7 +100,7 @@
                     android:layout_marginTop="7dp"
                     android:gravity="center"
                     android:text="버전 정보"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="17dp"
                     android:textStyle="bold" />
 

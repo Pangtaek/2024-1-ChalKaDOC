@@ -161,6 +161,10 @@ public class HomeCameraTakePictureActivity extends AppCompatActivity {
                             selectedBitmap = rotateImageIfRequired(selectedBitmap, photoUri);
                             imageView.setImageBitmap(selectedBitmap);
                             Log.d(TAG, "Camera image selected and set to ImageView");
+
+                            // 촬영이 완료된 후에 uploadToFirebaseStorage 호출
+                            uploadToFirebaseStorage(selectedBitmap);
+
                         } catch (Exception e) {
                             Log.e(TAG, "Error setting camera image to ImageView: ", e);
                         }
@@ -175,6 +179,10 @@ public class HomeCameraTakePictureActivity extends AppCompatActivity {
                         selectedBitmap = rotateImageIfRequired(selectedBitmap, selectedImageUri);
                         imageView.setImageBitmap(selectedBitmap);
                         Log.d(TAG, "Gallery image selected and set to ImageView");
+
+                        // 갤러리에서 이미지를 선택한 후에도 uploadToFirebaseStorage 호출
+                        uploadToFirebaseStorage(selectedBitmap);
+
                     } catch (Exception e) {
                         Log.e(TAG, "Error loading gallery image: ", e);
                     }
@@ -260,4 +268,3 @@ public class HomeCameraTakePictureActivity extends AppCompatActivity {
         });
     }
 }
-

@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.chalkadoc.R;
+import com.example.chalkadoc.partnership.PartnershipActivity;
 
 import org.tensorflow.lite.Interpreter;
 
@@ -34,6 +35,7 @@ public class HomeCameraResultActivity_1 extends AppCompatActivity {
     private TextView resultTextView;
     private TextView rTview;
     private Interpreter tflite;
+    private TextView tv_goToMap;
 
     private static final String TAG = "HomeCameraResultActivity_1";
 
@@ -50,6 +52,16 @@ public class HomeCameraResultActivity_1 extends AppCompatActivity {
         imageView = findViewById(R.id.iv_camera);
         resultTextView = findViewById(R.id.tv_eyes_result);
         rTview = findViewById(R.id.tv_skin_result);
+        tv_goToMap = findViewById(R.id.tv_goToMap);
+
+        tv_goToMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeCameraResultActivity_1.this, PartnershipActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         String imageUriString = getIntent().getStringExtra("imageUri");
         if (imageUriString != null) {

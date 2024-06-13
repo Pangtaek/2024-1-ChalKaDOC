@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.chalkadoc.R;
+import com.example.chalkadoc.partnership.PartnershipActivity;
 
 import org.tensorflow.lite.Interpreter;
 
@@ -34,6 +35,7 @@ public class HomeCameraResultActivity_2 extends AppCompatActivity {
     private TextView resultTextView;
     private Interpreter tflite;
     private TextView tv_detailPage;
+    private TextView tv_goToMap;
     public String resultToNextPage;
     private static final String TAG = "HomeCameraResultAcitivy_2";
 
@@ -55,6 +57,16 @@ public class HomeCameraResultActivity_2 extends AppCompatActivity {
         imageView = findViewById(R.id.iv_camera);
         resultTextView = findViewById(R.id.tv_teeth_result);
         tv_detailPage = findViewById(R.id.tv_detailResult);
+        tv_goToMap = findViewById(R.id.tv_goToMap);
+
+        tv_goToMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeCameraResultActivity_2.this, PartnershipActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         tv_detailPage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -232,8 +244,7 @@ public class HomeCameraResultActivity_2 extends AppCompatActivity {
             intent.putExtra("skinDiseaseConfidence", skinDiseaseConfidence);
             intent.putExtra("dentalDiseaseLabel", dentalDiseaseLabel);
             intent.putExtra("dentalDiseaseConfidence", dentalDiseaseConfidence);
-
-
+            
             // DentalActivity 실행
             startActivity(intent);
             finish();

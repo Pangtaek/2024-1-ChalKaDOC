@@ -97,11 +97,11 @@
             android:layout_width="250dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/card_border_3"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/card_border_5"
             android:gravity="center"
             android:text="증상 보기"
-            android:textColor="#8e8e8e"
+            android:textColor="@color/white"
             android:textSize="17dp"
             android:textStyle="bold" />
 
@@ -112,10 +112,10 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_marginTop="15dp"
-            android:text="예측 결과 관련 병원보기"
-            android:textColor="#8e8e8e"
+            android:text="예측 결과 관련 병원 보기"
+            android:textColor="@color/white"
             android:textSize="17dp"
             android:textStyle="bold"
-            android:background="@drawable/card_border_3"/>
+            android:background="@drawable/card_border_5"/>
     </LinearLayout>
 </LinearLayout>

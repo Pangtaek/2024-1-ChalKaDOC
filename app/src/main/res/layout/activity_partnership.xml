@@ -32,7 +32,7 @@
             android:layout_weight="1"
             android:background="@drawable/square_background_border_blue"
             android:text="거리순"
-            android:textColor="#000000"
+            android:textColor="@color/white"
             android:textSize="15sp"
             android:textStyle="bold"
             />
@@ -44,7 +44,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            android:textColor="#000000"
+            android:textColor="@color/white"
             android:textSize="15sp"
             android:layout_weight="1"
             android:text="내 주변" />
@@ -79,7 +79,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/square_background_border_blue"
             android:text="+"
-            android:textColor="#000000"
+            android:textColor="@color/white"
             android:layout_marginBottom="10dp"
             android:textSize="24dp"/>
 
@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/square_background_border_blue"
             android:text="-"
-            android:textColor="#000000"
+            android:textColor="@color/white"
             android:textSize="24dp"/>
 
     </LinearLayout>
