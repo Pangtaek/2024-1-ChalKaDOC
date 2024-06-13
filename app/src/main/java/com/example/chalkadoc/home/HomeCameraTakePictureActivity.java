@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -22,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.exifinterface.media.ExifInterface;
 
 import com.example.chalkadoc.R;
 import com.google.firebase.storage.FirebaseStorage;
@@ -47,6 +49,8 @@ public class HomeCameraTakePictureActivity extends AppCompatActivity {
     private Button analyzeButton;
 
     private Bitmap selectedBitmap;
+
+    private Uri photoUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +92,28 @@ public class HomeCameraTakePictureActivity extends AppCompatActivity {
 
     private void openCamera() {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE);
+
+        if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+            // 고해상도 이미지를 저장할 파일 생성
+            File photoFile = createImageFile();
+            if (photoFile != null) {
+                photoUri = FileProvider.getUriForFile(this, "com.example.ai_face.fileprovider", photoFile);
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE);
+            }
+        }
+    }
+
+    private File createImageFile() {
+        try {
+            String imageFileName = "JPEG_" + System.currentTimeMillis() + "_";
+            File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            File imageFile = File.createTempFile(imageFileName, ".jpg", storageDir);
+            return imageFile;
+        } catch (Exception e) {
+            Log.e(TAG, "Error creating image file: ", e);
+            return null;
+        }
     }
 
     private void openGallery() {
@@ -130,16 +155,16 @@ public class HomeCameraTakePictureActivity extends AppCompatActivity {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case CAMERA_REQUEST_CODE:
-                    selectedBitmap = (Bitmap) data.getExtras().get("data");
-                    imageView.setImageBitmap(selectedBitmap);
-                    Log.d(TAG, "Camera image selected");
-
-                    // 2024. 06. 13. 임광택
-                    // 촬영한 사진을 FIrebase Storage에 저장
-                    uploadToFirebaseStorage(selectedBitmap);
-                    // 재촬영 가능하다는 토스트 메시지 출력
-                    Toast.makeText(getApplicationContext(), "촬영버튼으로 재촬영 가능", Toast.LENGTH_SHORT);
-
+                    if (photoUri != null) {
+                        try {
+                            selectedBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(photoUri));
+                            selectedBitmap = rotateImageIfRequired(selectedBitmap, photoUri);
+                            imageView.setImageBitmap(selectedBitmap);
+                            Log.d(TAG, "Camera image selected and set to ImageView");
+                        } catch (Exception e) {
+                            Log.e(TAG, "Error setting camera image to ImageView: ", e);
+                        }
+                    }
                     break;
                 case GALLERY_REQUEST_CODE:
                     Uri selectedImageUri = data.getData();
@@ -147,8 +172,9 @@ public class HomeCameraTakePictureActivity extends AppCompatActivity {
                         InputStream is = getContentResolver().openInputStream(selectedImageUri);
                         selectedBitmap = BitmapFactory.decodeStream(is);
                         is.close();
+                        selectedBitmap = rotateImageIfRequired(selectedBitmap, selectedImageUri);
                         imageView.setImageBitmap(selectedBitmap);
-                        Log.d(TAG, "Gallery image selected");
+                        Log.d(TAG, "Gallery image selected and set to ImageView");
                     } catch (Exception e) {
                         Log.e(TAG, "Error loading gallery image: ", e);
                     }
@@ -157,6 +183,37 @@ public class HomeCameraTakePictureActivity extends AppCompatActivity {
         } else {
             Log.d(TAG, "Activity result not OK, requestCode: " + requestCode + ", resultCode: " + resultCode);
         }
+    }
+
+    private Bitmap rotateImageIfRequired(Bitmap img, Uri selectedImage) throws Exception {
+        InputStream input = getContentResolver().openInputStream(selectedImage);
+        ExifInterface ei;
+        if (android.os.Build.VERSION.SDK_INT > 23) {
+            ei = new ExifInterface(input);
+        } else {
+            ei = new ExifInterface(selectedImage.getPath());
+        }
+
+        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+        switch (orientation) {
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                return rotateImage(img, 90);
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                return rotateImage(img, 180);
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                return rotateImage(img, 270);
+            default:
+                return img;
+        }
+    }
+
+    private Bitmap rotateImage(Bitmap img, int degree) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        Bitmap rotatedImg = Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, true);
+        img.recycle();
+        return rotatedImg;
     }
 
     public void checkSelfPermission() {

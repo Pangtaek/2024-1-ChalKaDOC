@@ -56,7 +56,7 @@ public class PartnershipFragment extends Fragment {
                 eyesData.set카테고리(jsonObject.getString("카테고리"));
                 eyesData.set주소(jsonObject.getString("주소"));
 //                eyesData.set병원_이미지_링크(jsonObject.getString("병원 이미지 링크"));
-//                eyesData.set방문자_리뷰수(jsonObject.optInt("방문자_리뷰수", 0));
+                eyesData.set방문자_리뷰수(jsonObject.optString("방문자_리뷰수"));
                 eyesData.setPartnered(jsonObject.optBoolean("제휴병원", true));
 //                eyesData.setDistance(jsonObject.optDouble("distance", 0.0));
 
