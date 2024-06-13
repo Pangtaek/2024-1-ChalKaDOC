@@ -85,7 +85,6 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
 
         startValue = getIntent().getIntExtra("startValue", 0);
 
-        Toast.makeText(PartnershipActivity.this, startValue + "", Toast.LENGTH_SHORT).show();
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         bottomSheetBehavior.setPeekHeight(300);
@@ -242,7 +241,7 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
 
         // 제휴병원 데이터를 로드합니다.
         loadMarkersAndHospitals(R.raw.jhospitals, BitmapDescriptorFactory.HUE_RED);
-        init();
+
     }
 
     // 옵션에서 버튼 눌렀을 때 사용하는 메소드. 아이디 값에 따른 정수를 리턴함.
@@ -317,9 +316,10 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
                 }
             }
         } catch (Exception e) {
-            Log.e("PartnershipActivity", "Error reading JSON file", e);
+            Log.e("PartnershipActivity", "JSON 파일 읽기 오류", e);
         }
     }
+
 
     private void setupDragHandle() {
         View dragHandle = findViewById(R.id.drag_handle);
@@ -584,6 +584,7 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
 
         // 기본적으로 마커를 로드
         loadMarkersAndHospitals(R.raw.jhospitals, BitmapDescriptorFactory.HUE_GREEN);
+        init();
     }
 
     private void getLocationPermission() {
@@ -668,8 +669,13 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
         getDeviceLocation();
     }
 
+    // 액티비티 시작 시, 전달 값에 따른 마커표시를 위한 메소드
     private void init() {
         switch (startValue) {
+            case 0:
+                Toast.makeText(getApplication(), "제휴병원을 초록색으로 표시합니다.", Toast.LENGTH_SHORT).show();
+                break;
+
             case 1:
                 // 안과
                 currentCategory = "eye_clinic";
@@ -677,6 +683,7 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
                 Toast.makeText(getApplication(), "안과를 파란색으로 표시합니다.", Toast.LENGTH_SHORT).show();
                 loadMarkersAndHospitals(R.raw.eyes, BitmapDescriptorFactory.HUE_BLUE);
                 break;
+
             case 2:
                 // 피부과
                 currentCategory = "dermatology";
@@ -684,6 +691,7 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
                 Toast.makeText(getApplication(), "피부과를 빨간색으로 표시합니다.", Toast.LENGTH_SHORT).show();
                 loadMarkersAndHospitals(R.raw.skin, BitmapDescriptorFactory.HUE_ROSE);
                 break;
+
             case 3:
                 // 치과
                 currentCategory = "dentist";
@@ -691,8 +699,8 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
                 Toast.makeText(getApplication(), "치과를 주황색으로 표시합니다.", Toast.LENGTH_SHORT).show();
                 loadMarkersAndHospitals(R.raw.teeth, BitmapDescriptorFactory.HUE_ORANGE);
                 break;
+
             default:
-                Toast.makeText(getApplication(), "제휴병원을 초록색으로 표시합니다.", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
