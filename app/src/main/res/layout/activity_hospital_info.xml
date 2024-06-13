@@ -65,16 +65,7 @@
             android:textColor="@color/white"
             android:text="예약"/>
 
-        <android.widget.Button
-            android:id="@+id/button3"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:background="@drawable/card_border_5"
-            android:textStyle="bold"
-            android:textSize="18dp"
-            android:textColor="@color/white"
-            android:text="홈페이지"/>
+
 
     </LinearLayout>
 

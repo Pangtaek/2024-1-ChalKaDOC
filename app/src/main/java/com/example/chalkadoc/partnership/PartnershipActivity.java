@@ -69,6 +69,7 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
     private HospitalAdapter listAdapter;
     private Location currentLocation; // 현재 위치를 저장할 변수
     private String currentCategory = ""; // 현재 선택된 카테고리 저장
+    private int startValue = 0;     // 시작 시, 마커 띄울 때 씀.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,9 +82,12 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
         Button btnDistance = findViewById(R.id.btn_distance);
         Button btnDistance2 = findViewById(R.id.btn_distance2);
         View bottomSheet = findViewById(R.id.bottom_sheet);
+
+        startValue = getIntent().getIntExtra("startValue", 0);
+
+        Toast.makeText(PartnershipActivity.this, startValue + "", Toast.LENGTH_SHORT).show();
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
         bottomSheetBehavior.setPeekHeight(300);
 
         bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
@@ -100,6 +104,7 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
                 // 슬라이드될 때 처리할 내용
             }
         });
+
 
         // 지도 줌인
         zoomInButton.setOnClickListener(new View.OnClickListener() {
@@ -150,7 +155,6 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
                 PopupMenu popupMenu = new PopupMenu(PartnershipActivity.this, v); // v는 클릭된 뷰를 의미
                 // 메뉴 인플레이터를 사용하여 팝업 메뉴에 메뉴 리소스를 추가
                 popupMenu.getMenuInflater().inflate(R.menu.option_menu, popupMenu.getMenu());
-
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
@@ -238,6 +242,7 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
 
         // 제휴병원 데이터를 로드합니다.
         loadMarkersAndHospitals(R.raw.jhospitals, BitmapDescriptorFactory.HUE_RED);
+        init();
     }
 
     // 옵션에서 버튼 눌렀을 때 사용하는 메소드. 아이디 값에 따른 정수를 리턴함.
@@ -538,8 +543,6 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
         return jhospitals;
     }
 
-
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -663,5 +666,34 @@ public class PartnershipActivity extends AppCompatActivity implements OnMapReady
     public void mCurrentLocation(View view) {
         firstLocationUpdate = true;
         getDeviceLocation();
+    }
+
+    private void init() {
+        switch (startValue) {
+            case 1:
+                // 안과
+                currentCategory = "eye_clinic";
+                toggleBottomSheet();
+                Toast.makeText(getApplication(), "안과를 파란색으로 표시합니다.", Toast.LENGTH_SHORT).show();
+                loadMarkersAndHospitals(R.raw.eyes, BitmapDescriptorFactory.HUE_BLUE);
+                break;
+            case 2:
+                // 피부과
+                currentCategory = "dermatology";
+                toggleBottomSheet();
+                Toast.makeText(getApplication(), "피부과를 빨간색으로 표시합니다.", Toast.LENGTH_SHORT).show();
+                loadMarkersAndHospitals(R.raw.skin, BitmapDescriptorFactory.HUE_ROSE);
+                break;
+            case 3:
+                // 치과
+                currentCategory = "dentist";
+                toggleBottomSheet();
+                Toast.makeText(getApplication(), "치과를 주황색으로 표시합니다.", Toast.LENGTH_SHORT).show();
+                loadMarkersAndHospitals(R.raw.teeth, BitmapDescriptorFactory.HUE_ORANGE);
+                break;
+            default:
+                Toast.makeText(getApplication(), "제휴병원을 초록색으로 표시합니다.", Toast.LENGTH_SHORT).show();
+                break;
+        }
     }
 }

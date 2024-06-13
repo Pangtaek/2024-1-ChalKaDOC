@@ -58,8 +58,22 @@ public class HomeCameraResultActivity_1 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(HomeCameraResultActivity_1.this, PartnershipActivity.class);
-                startActivity(intent);
-                finish();
+                // 예측된 안구 질환이 있으면 PartnershipActivity에 startValue 1을 전달하고, 화면을 전환
+                if(!highestConfidenceEyeDiseaseLabel.equals("결과 없음")){
+                    intent.putExtra("startValue", 1);
+                    startActivity(intent);
+                    finish();
+                }
+                // 예측된 피부 질환이 있으면 PartnershipActivity에 startValue 2을 전달하고, 화면을 전환
+                else if(!highestConfidenceSkinDiseaseLabel.equals("결과 없음")){
+                    intent.putExtra("startValue", 2);
+                    startActivity(intent);
+                    finish();
+                }
+                // 예측된 질환이 없으면, 토스트 메시지 출력
+               else{
+                   Toast.makeText(HomeCameraResultActivity_1.this, "예측된 질환이 없습니다.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

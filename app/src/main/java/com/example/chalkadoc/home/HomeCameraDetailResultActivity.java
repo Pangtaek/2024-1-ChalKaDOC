@@ -37,7 +37,7 @@ public class HomeCameraDetailResultActivity extends AppCompatActivity {
     private String skinDiseaseLabel;
     private int skinDiseaseConfidence;
     private String dentalDiseaseLabel;
-    private float dentalDiseaseConfidence;
+    private int dentalDiseaseConfidence;
 
     private static final String TAG = "AllResultActivity";
 
@@ -96,7 +96,7 @@ public class HomeCameraDetailResultActivity extends AppCompatActivity {
         skinDiseaseLabel = getIntent().getStringExtra("skinDiseaseLabel");
         skinDiseaseConfidence = getIntent().getIntExtra("skinDiseaseConfidence", 0);
         dentalDiseaseLabel = getIntent().getStringExtra("dentalDiseaseLabel");
-        dentalDiseaseConfidence = getIntent().getFloatExtra("dentalDiseaseConfidence", 0.1f);
+        dentalDiseaseConfidence = getIntent().getIntExtra("dentalDiseaseConfidence", 0);
 
         // 수신한 데이터 로그 출력
         Log.d(TAG, "Eye Disease: " + eyeDiseaseLabel + " (Confidence: " + eyeDiseaseConfidence + "%)");
@@ -106,7 +106,7 @@ public class HomeCameraDetailResultActivity extends AppCompatActivity {
         // 진단 결과 설정
         eyeResultTextView.setText(String.format("%s (정확도: %d%%)", eyeDiseaseLabel, eyeDiseaseConfidence));
         skinResultTextView.setText(String.format("%s (정확도: %d%%)", skinDiseaseLabel, skinDiseaseConfidence));
-        teethResultTextView.setText(String.format("%s (정확도: %.1f%%)", dentalDiseaseLabel, dentalDiseaseConfidence));
+        teethResultTextView.setText(String.format("%s (정확도: %d%%)", dentalDiseaseLabel, dentalDiseaseConfidence));
 
         // JSON 로드 및 파싱
         String json = loadJSONFromAsset();
@@ -122,7 +122,7 @@ public class HomeCameraDetailResultActivity extends AppCompatActivity {
                 symptomText.append("피부 질환: ").append(skinDiseaseLabel).append("\n증상: ").append(disease.getSymptom()).append("\n\n");
             }
             if (disease.getName().equals(dentalDiseaseLabel)) {
-                symptomText.append("치주 질환: ").append(dentalDiseaseLabel).append("\n증상: ").append(disease.getSymptom()).append("\n\n");
+                symptomText.append("구강 질환: ").append(dentalDiseaseLabel).append("\n증상: ").append(disease.getSymptom()).append("\n\n");
             }
         }
         symptomResultTextView.setText(symptomText.toString());

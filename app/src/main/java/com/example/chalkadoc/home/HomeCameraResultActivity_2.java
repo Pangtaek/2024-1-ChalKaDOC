@@ -30,7 +30,6 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
 public class HomeCameraResultActivity_2 extends AppCompatActivity {
-
     private ImageView imageView;
     private TextView resultTextView;
     private Interpreter tflite;
@@ -38,14 +37,12 @@ public class HomeCameraResultActivity_2 extends AppCompatActivity {
     private TextView tv_goToMap;
     public String resultToNextPage;
     private static final String TAG = "HomeCameraResultAcitivy_2";
-
     private String eyeDiseaseLabel;
     private int eyeDiseaseConfidence;
     private String skinDiseaseLabel;
     private int skinDiseaseConfidence;
     private String dentalDiseaseLabel;
-    private float dentalDiseaseConfidence;
-
+    private int dentalDiseaseConfidence;
     private int classIndex = -1;
     private float maxClassProbability = -1.0f;
 
@@ -62,9 +59,17 @@ public class HomeCameraResultActivity_2 extends AppCompatActivity {
         tv_goToMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeCameraResultActivity_2.this, PartnershipActivity.class);
-                startActivity(intent);
-                finish();
+                // 예측된 구강 질환이 있으면 startValue 3을 PartnershipActivity에 전달하고 화면이 전환
+                if(!dentalDiseaseLabel.equals("질병 없음")){
+                    Intent intent = new Intent(HomeCameraResultActivity_2.this, PartnershipActivity.class);
+                    intent.putExtra("startValue", 3);
+                    startActivity(intent);
+                    finish();
+                }
+                // 예측된 질병이 없으면 토스트 메시지 출력
+                else{
+                    Toast.makeText(HomeCameraResultActivity_2.this, "예측된 질환이 없습니다.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -163,7 +168,7 @@ public class HomeCameraResultActivity_2 extends AppCompatActivity {
             textPaint.setColor(Color.RED);
             textPaint.setTextSize(24);
 
-            String[] labels = {"잇몸부종", "치석", "충치", "부정교합", "치아착색"};
+            String[] labels = {"치은염", "치석", "충치", "부정교합", "치아착색"};
 
             // 결과를 저장할 변수
             String result = "분석 실패";
@@ -211,13 +216,12 @@ public class HomeCameraResultActivity_2 extends AppCompatActivity {
                     // 클래스 이름 그리기
                     canvas.drawText(labels[classIndex], left, top - 10, textPaint);
                     dentalDiseaseLabel = labels[classIndex];
-                    dentalDiseaseConfidence = maxClassProbability * 100;
-
-
+                    dentalDiseaseConfidence = Math.round(maxClassProbability * 100);  // float 값을 int로 변환
                 }
             } else {
                 // 임계값 이상의 객체가 없는 경우
                 dentalDiseaseLabel = "결과 없음.";
+                dentalDiseaseConfidence = 0;  // 결과가 없는 경우 confidence를 0으로 설정
             }
             result = dentalDiseaseLabel + " (" + dentalDiseaseConfidence + "%)";
 
@@ -244,7 +248,7 @@ public class HomeCameraResultActivity_2 extends AppCompatActivity {
             intent.putExtra("skinDiseaseConfidence", skinDiseaseConfidence);
             intent.putExtra("dentalDiseaseLabel", dentalDiseaseLabel);
             intent.putExtra("dentalDiseaseConfidence", dentalDiseaseConfidence);
-            
+
             // DentalActivity 실행
             startActivity(intent);
             finish();
