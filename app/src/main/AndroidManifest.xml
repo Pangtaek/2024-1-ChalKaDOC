@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -24,16 +24,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ChalKaDOC"
-        tools:targetApi="31">
+        tools:targetApi="31" >
         <activity
-            android:name=".popup.CustomPopupActivity"
+            android:name=".popup.CustomPopupPartnership"
+            android:exported="false" />
+        <activity
+            android:name=".popup.CustomPopupPictureActivity"
             android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.ai_face.fileprovider"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true" >
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
@@ -72,13 +75,13 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".listview.JHospitalInfoActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".login.RegisterActivity"
             android:exported="false" />
         <activity
             android:name=".common.SplashActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

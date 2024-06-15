@@ -1,10 +1,10 @@
 package com.example.chalkadoc.navigation;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -12,10 +12,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.chalkadoc.R;
 import com.example.chalkadoc.home.HomeCameraActivity;
-import com.example.chalkadoc.popup.CustomPopupActivity;
+import com.example.chalkadoc.mypage.UserInformationModifyActivity;
+import com.example.chalkadoc.popup.CustomPopupPartnership;
+import com.example.chalkadoc.popup.CustomPopupPictureActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
@@ -26,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private HomeFragment homeFragment;
     private PartnershipFragment partnershipFragment;
     private MyPageFragment myPageFragment;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +38,16 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
+        sharedPreferences = getSharedPreferences("popup_prefs", MODE_PRIVATE);
+
         init();
         // Firebase 스토리지의 촬영 사진 폴더 안에 사진이 없으면 커스텀 다이얼로그 표시
         checkIfPhotosExist();
+
+        // 첫 번째 로그인 시에만 CustomPopupPartnership를 표시
+        if (isFirstLogin() && FirebaseAuth.getInstance().getCurrentUser() != null) {
+            showCustomPopup();
+        }
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -107,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showCustomDialog() {
-        CustomPopupActivity customPopupActivity = new CustomPopupActivity(this, "촬영하여 기록했던 사진이 없습니다.") {
+        CustomPopupPictureActivity customPopupActivity = new CustomPopupPictureActivity(this, "촬영하여 기록했던 사진이 없습니다.") {
             @Override
             public void onCreate(Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
@@ -115,9 +127,42 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, HomeCameraActivity.class);
                     startActivity(intent);
                     finish();
+                    dismiss();
                 });
             }
         };
         customPopupActivity.show();
     }
+
+    private boolean isFirstLogin() {
+        return sharedPreferences.getBoolean("first_login", true);
+    }
+
+    private void setFirstLoginDone() {
+        sharedPreferences.edit().putBoolean("first_login", false).apply();
+    }
+
+    private void showCustomPopup() {
+        CustomPopupPartnership customPopupPartnership = new CustomPopupPartnership(MainActivity.this, "") {
+            @Override
+            public void onCreate(Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);
+                // 설정 및 레이아웃 초기화
+
+                // 확인 버튼 클릭 시 이벤트
+                btn_yes.setOnClickListener(v -> {
+                    Intent intent = new Intent(MainActivity.this, UserInformationModifyActivity.class);
+                    startActivity(intent);
+                    finish();
+                    // 팝업 닫기
+                    dismiss();
+                });
+            }
+        };
+        customPopupPartnership.show();
+
+        // 첫 번째 로그인 처리 완료로 설정
+        setFirstLoginDone();
+    }
+
 }
