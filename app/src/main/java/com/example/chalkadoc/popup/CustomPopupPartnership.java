@@ -9,17 +9,17 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.chalkadoc.R;
 
-public class CustomPopupActivity extends Dialog {
+public class CustomPopupPartnership extends Dialog {
+
     public TextView txt_contents;
     public Button btn_yes;
     public Button btn_no;
     private String contents;
 
-    public CustomPopupActivity(@NonNull Context context, String contents) {
+    public CustomPopupPartnership(@NonNull Context context, String contents) {
         super(context);
         this.contents = contents;
     }
@@ -28,7 +28,7 @@ public class CustomPopupActivity extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.activity_custom_popup, null);
+        View dialogView = inflater.inflate(R.layout.activity_custom_popup_partnership, null);
         setContentView(dialogView);
 
         txt_contents = dialogView.findViewById(R.id.txt_contents);

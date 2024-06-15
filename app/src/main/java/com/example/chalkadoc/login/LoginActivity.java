@@ -49,12 +49,12 @@ public class LoginActivity extends AppCompatActivity {
         init();
 
         // 이미 구글 로그인이 했었다면, 바로 메인화면으로 이등하는 코드
-//        if (firebaseAuth.getCurrentUser() != null) {
-//            Intent intent = new Intent(getApplication(), MainActivity.class);
-//            startActivity(intent);
-//            finish();
-//            Log.d("Login", "Google Login Success!!!");
-//        }
+        if (firebaseAuth.getCurrentUser() != null) {
+            Intent intent = new Intent(getApplication(), MainActivity.class);
+            startActivity(intent);
+            finish();
+            Log.d("Login", "Google Login Success!!!");
+        }
 
         // 로그인 버튼을 눌렀을 때
         btn_loginButton.setOnClickListener(new View.OnClickListener() {
