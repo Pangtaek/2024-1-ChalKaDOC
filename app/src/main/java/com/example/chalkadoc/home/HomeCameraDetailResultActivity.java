@@ -20,6 +20,7 @@ import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,11 +34,11 @@ public class HomeCameraDetailResultActivity extends AppCompatActivity {
     private TextView symptomResultTextView;
 
     private String eyeDiseaseLabel;
-    private int eyeDiseaseConfidence;
+    private float eyeDiseaseConfidence;
     private String skinDiseaseLabel;
-    private int skinDiseaseConfidence;
+    private float skinDiseaseConfidence;
     private String dentalDiseaseLabel;
-    private int dentalDiseaseConfidence;
+    private float dentalDiseaseConfidence;
 
     private static final String TAG = "AllResultActivity";
 
@@ -92,21 +93,24 @@ public class HomeCameraDetailResultActivity extends AppCompatActivity {
 
         // 진단 결과 수신
         eyeDiseaseLabel = getIntent().getStringExtra("eyeDiseaseLabel");
-        eyeDiseaseConfidence = getIntent().getIntExtra("eyeDiseaseConfidence", 0);
+        eyeDiseaseConfidence = getIntent().getFloatExtra("eyeDiseaseConfidence", 0);
         skinDiseaseLabel = getIntent().getStringExtra("skinDiseaseLabel");
-        skinDiseaseConfidence = getIntent().getIntExtra("skinDiseaseConfidence", 0);
+        skinDiseaseConfidence = getIntent().getFloatExtra("skinDiseaseConfidence", 0);
         dentalDiseaseLabel = getIntent().getStringExtra("dentalDiseaseLabel");
-        dentalDiseaseConfidence = getIntent().getIntExtra("dentalDiseaseConfidence", 0);
+        dentalDiseaseConfidence = getIntent().getFloatExtra("dentalDiseaseConfidence", 0);
 
         // 수신한 데이터 로그 출력
         Log.d(TAG, "Eye Disease: " + eyeDiseaseLabel + " (Confidence: " + eyeDiseaseConfidence + "%)");
         Log.d(TAG, "Skin Disease: " + skinDiseaseLabel + " (Confidence: " + skinDiseaseConfidence + "%)");
         Log.d(TAG, "Dental Disease: " + dentalDiseaseLabel + " (Confidence: " + dentalDiseaseConfidence + "%)");
 
+        // DecimalFormat을 사용하여 소수점 둘째 자리까지 표시
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+
         // 진단 결과 설정
-        eyeResultTextView.setText(String.format("%s (정확도: %d%%)", eyeDiseaseLabel, eyeDiseaseConfidence));
-        skinResultTextView.setText(String.format("%s (정확도: %d%%)", skinDiseaseLabel, skinDiseaseConfidence));
-        teethResultTextView.setText(String.format("%s (정확도: %d%%)", dentalDiseaseLabel, dentalDiseaseConfidence));
+        eyeResultTextView.setText(String.format("%s (정확도: %s%%)", eyeDiseaseLabel, decimalFormat.format(eyeDiseaseConfidence)));
+        skinResultTextView.setText(String.format("%s (정확도: %s%%)", skinDiseaseLabel, decimalFormat.format(skinDiseaseConfidence)));
+        teethResultTextView.setText(String.format("%s (정확도: %s%%)", dentalDiseaseLabel, decimalFormat.format(dentalDiseaseConfidence)));
 
         // JSON 로드 및 파싱
         String json = loadJSONFromAsset();
@@ -147,7 +151,6 @@ public class HomeCameraDetailResultActivity extends AppCompatActivity {
         return json;
     }
 
-
     // JSON을 Disease 객체 리스트로 파싱하는 메소드
     private List<Disease> parseDiseasesJSON(String json) {
         List<Disease> diseases = new ArrayList<>();
@@ -167,7 +170,6 @@ public class HomeCameraDetailResultActivity extends AppCompatActivity {
         return diseases;
     }
 
-
     // Disease 클래스 정의
     private static class Disease {
         private final String name;
@@ -186,8 +188,9 @@ public class HomeCameraDetailResultActivity extends AppCompatActivity {
             return symptom;
         }
     }
+
     // 초기화 메소드
-    private void init(){
+    private void init() {
         tv_goToMap = findViewById(R.id.tv_goToMap);
     }
 }

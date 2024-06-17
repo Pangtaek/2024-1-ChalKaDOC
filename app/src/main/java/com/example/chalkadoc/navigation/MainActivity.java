@@ -19,7 +19,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
@@ -45,9 +44,9 @@ public class MainActivity extends AppCompatActivity {
         checkIfPhotosExist();
 
         // 첫 번째 로그인 시에만 CustomPopupPartnership를 표시
-        if (isFirstLogin() && FirebaseAuth.getInstance().getCurrentUser() != null) {
-            showCustomPopup();
-        }
+//        if (isFirstLogin() && FirebaseAuth.getInstance().getCurrentUser() != null) {
+//            showCustomPopup();
+//        }
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -93,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         return result;
     }
 
-    private void init(){
+    private void init() {
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         homeFragment = new HomeFragment();
         partnershipFragment = new PartnershipFragment();
@@ -147,9 +146,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCreate(Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
-                // 설정 및 레이아웃 초기화
 
-                // 확인 버튼 클릭 시 이벤트
+                // 설정 및 레이아웃 초기화
                 btn_yes.setOnClickListener(v -> {
                     Intent intent = new Intent(MainActivity.this, UserInformationModifyActivity.class);
                     startActivity(intent);
@@ -164,5 +162,4 @@ public class MainActivity extends AppCompatActivity {
         // 첫 번째 로그인 처리 완료로 설정
         setFirstLoginDone();
     }
-
 }
