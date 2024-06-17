@@ -28,6 +28,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.text.DecimalFormat;
 
 public class HomeCameraResultActivity_2 extends AppCompatActivity {
     private ImageView imageView;
@@ -38,11 +39,11 @@ public class HomeCameraResultActivity_2 extends AppCompatActivity {
     public String resultToNextPage;
     private static final String TAG = "HomeCameraResultAcitivy_2";
     private String eyeDiseaseLabel;
-    private int eyeDiseaseConfidence;
+    private float eyeDiseaseConfidence;
     private String skinDiseaseLabel;
-    private int skinDiseaseConfidence;
+    private float skinDiseaseConfidence;
     private String dentalDiseaseLabel;
-    private int dentalDiseaseConfidence;
+    private float dentalDiseaseConfidence;
     private int classIndex = -1;
     private float maxClassProbability = -1.0f;
 
@@ -113,9 +114,9 @@ public class HomeCameraResultActivity_2 extends AppCompatActivity {
         }
 
         eyeDiseaseLabel = getIntent().getStringExtra("eyeDiseaseLabel");
-        eyeDiseaseConfidence = getIntent().getIntExtra("eyeDiseaseConfidence", 0);
+        eyeDiseaseConfidence = getIntent().getFloatExtra("eyeDiseaseConfidence", 0);
         skinDiseaseLabel = getIntent().getStringExtra("skinDiseaseLabel");
-        skinDiseaseConfidence = getIntent().getIntExtra("skinDiseaseConfidence", 0);
+        skinDiseaseConfidence = getIntent().getFloatExtra("skinDiseaseConfidence", 0);
     }
 
     private MappedByteBuffer loadModelFile() throws Exception {
@@ -216,14 +217,17 @@ public class HomeCameraResultActivity_2 extends AppCompatActivity {
                     // 클래스 이름 그리기
                     canvas.drawText(labels[classIndex], left, top - 10, textPaint);
                     dentalDiseaseLabel = labels[classIndex];
-                    dentalDiseaseConfidence = Math.round(maxClassProbability * 100);  // float 값을 int로 변환
+                    dentalDiseaseConfidence = maxClassProbability * 100;  // float 값을 퍼센트로 변환
                 }
             } else {
                 // 임계값 이상의 객체가 없는 경우
                 dentalDiseaseLabel = "결과 없음.";
-                dentalDiseaseConfidence = 0;  // 결과가 없는 경우 confidence를 0으로 설정
+                dentalDiseaseConfidence = -0.1f;  // 결과가 없는 경우 confidence를 0으로 설정
             }
-            result = dentalDiseaseLabel + " (" + dentalDiseaseConfidence + "%)";
+
+            DecimalFormat decimalFormat = new DecimalFormat("#.##");
+
+            result = dentalDiseaseLabel + " (" + decimalFormat.format(dentalDiseaseConfidence) + "%)";
 
             // 결과 반환
             imageView.setImageBitmap(mutableBitmap);

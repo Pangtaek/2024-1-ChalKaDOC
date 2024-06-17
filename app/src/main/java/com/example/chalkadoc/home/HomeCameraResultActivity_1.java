@@ -28,6 +28,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.text.DecimalFormat;
 
 public class HomeCameraResultActivity_1 extends AppCompatActivity {
 
@@ -40,9 +41,9 @@ public class HomeCameraResultActivity_1 extends AppCompatActivity {
     private static final String TAG = "HomeCameraResultActivity_1";
 
     private String highestConfidenceEyeDiseaseLabel;
-    private int highestConfidenceEyeDiseasePercent;
+    private float highestConfidenceEyeDiseasePercent;
     private String highestConfidenceSkinDiseaseLabel;
-    private int highestConfidenceSkinDiseasePercent;
+    private float highestConfidenceSkinDiseasePercent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +72,8 @@ public class HomeCameraResultActivity_1 extends AppCompatActivity {
                     finish();
                 }
                 // 예측된 질환이 없으면, 토스트 메시지 출력
-               else{
-                   Toast.makeText(HomeCameraResultActivity_1.this, "예측된 질환이 없습니다.", Toast.LENGTH_SHORT).show();
+                else{
+                    Toast.makeText(HomeCameraResultActivity_1.this, "예측된 질환이 없습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -194,11 +195,11 @@ public class HomeCameraResultActivity_1 extends AppCompatActivity {
 
             // 최종 결과 저장할 변수
             highestConfidenceEyeDiseaseLabel = null;
-            highestConfidenceEyeDiseasePercent = 0;
+            highestConfidenceEyeDiseasePercent = -0.1f;
             float[] highestConfidenceEyeDiseaseBox = null;
 
             highestConfidenceSkinDiseaseLabel = null;
-            highestConfidenceSkinDiseasePercent = 0;
+            highestConfidenceSkinDiseasePercent = -0.1f;
             float[] highestConfidenceSkinDiseaseBox = null;
 
             // 임계값 설정
@@ -221,7 +222,7 @@ public class HomeCameraResultActivity_1 extends AppCompatActivity {
 
                     // 결과에 추가
                     if (classIndex != -1) {
-                        int confidencePercent = (int) (objectProbability * 100);
+                        float confidencePercent = (float) (objectProbability * 100);
                         if (classIndex < 4) { // Eye disease
                             if (confidencePercent > highestConfidenceEyeDiseasePercent) {
                                 highestConfidenceEyeDiseasePercent = confidencePercent;
@@ -248,6 +249,8 @@ public class HomeCameraResultActivity_1 extends AppCompatActivity {
                     }
                 }
             }
+
+            DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
             // 최종 결과 그리기
             if (highestConfidenceEyeDiseaseLabel != null) {
@@ -277,7 +280,7 @@ public class HomeCameraResultActivity_1 extends AppCompatActivity {
                 float left = centerX - (width / 2);
                 float top = centerY - (height / 2);
                 float right = centerX + (width / 2);
-                float bottom = centerY + (height / 2);
+                float bottom = centerY + (width / 2);
 
                 // 경계 상자와 클래스 이름 그리기
                 canvas.drawRect(left, top, right, bottom, paint);
@@ -287,8 +290,8 @@ public class HomeCameraResultActivity_1 extends AppCompatActivity {
             }
 
             imageView.setImageBitmap(mutableBitmap);
-            resultTextView.setText(highestConfidenceEyeDiseaseLabel + " (정확도: " + highestConfidenceEyeDiseasePercent + "%)");
-            rTview.setText(highestConfidenceSkinDiseaseLabel + " (정확도: " + highestConfidenceSkinDiseasePercent + "%)");
+            resultTextView.setText(highestConfidenceEyeDiseaseLabel + " (정확도: " + decimalFormat.format(highestConfidenceEyeDiseasePercent) + "%)");
+            rTview.setText(highestConfidenceSkinDiseaseLabel + " (정확도: " + decimalFormat.format(highestConfidenceSkinDiseasePercent) + "%)");
         } catch (Exception e) {
             Log.e(TAG, "TensorFlow Lite 모델 실행 실패", e);
             resultTextView.setText("분석 실패");

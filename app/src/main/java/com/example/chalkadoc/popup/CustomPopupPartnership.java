@@ -2,6 +2,7 @@ package com.example.chalkadoc.popup;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.example.chalkadoc.R;
+import com.example.chalkadoc.mypage.UserInformationModifyActivity;
 
 public class CustomPopupPartnership extends Dialog {
 
@@ -41,6 +43,13 @@ public class CustomPopupPartnership extends Dialog {
         btn_no.setOnClickListener(v -> dismiss());
     }
 
+    public void setYesButtonClickListener(View.OnClickListener onClickListener) {
+        if (btn_yes != null) {
+            btn_yes.setOnClickListener(onClickListener);
+        }
+    }
+
+    @Override
     public void show() {
         super.show();
     }
