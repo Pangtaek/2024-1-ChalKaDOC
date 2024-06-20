@@ -195,11 +195,11 @@ public class HomeCameraResultActivity_1 extends AppCompatActivity {
 
             // 최종 결과 저장할 변수
             highestConfidenceEyeDiseaseLabel = null;
-            highestConfidenceEyeDiseasePercent = -0.1f;
+            highestConfidenceEyeDiseasePercent = 0.0f;
             float[] highestConfidenceEyeDiseaseBox = null;
 
             highestConfidenceSkinDiseaseLabel = null;
-            highestConfidenceSkinDiseasePercent = -0.1f;
+            highestConfidenceSkinDiseasePercent = 0.0f;
             float[] highestConfidenceSkinDiseaseBox = null;
 
             // 임계값 설정

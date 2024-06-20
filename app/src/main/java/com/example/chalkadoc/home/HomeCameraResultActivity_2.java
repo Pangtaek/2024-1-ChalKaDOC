@@ -222,7 +222,7 @@ public class HomeCameraResultActivity_2 extends AppCompatActivity {
             } else {
                 // 임계값 이상의 객체가 없는 경우
                 dentalDiseaseLabel = "결과 없음.";
-                dentalDiseaseConfidence = -0.1f;  // 결과가 없는 경우 confidence를 0으로 설정
+                dentalDiseaseConfidence = 0.0f;  // 결과가 없는 경우 confidence를 0으로 설정
             }
 
             DecimalFormat decimalFormat = new DecimalFormat("#.##");

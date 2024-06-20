@@ -40,16 +40,13 @@ public class HomeCameraTakePictureActivity extends AppCompatActivity {
     private static final int CAMERA_REQUEST_CODE = 1;
     private static final int GALLERY_REQUEST_CODE = 2;
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
-
     private static final String TAG = "CameraActivity";
 
     private ImageView imageView;
     private ImageButton cameraButton;
     private ImageButton galleryButton;
     private Button analyzeButton;
-
     private Bitmap selectedBitmap;
-
     private Uri photoUri;
 
     @Override
@@ -259,12 +256,12 @@ public class HomeCameraTakePictureActivity extends AppCompatActivity {
             imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
                 // Handle the download URL here (if needed)
                 Log.d(TAG, "Image uploaded successfully. URL: " + uri.toString());
-                Toast.makeText(HomeCameraTakePictureActivity.this, "Image uploaded successfully", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(HomeCameraTakePictureActivity.this, "Image uploaded successfully", Toast.LENGTH_SHORT).show();
             });
         }).addOnFailureListener(e -> {
             // Handle unsuccessful uploads
             Log.e(TAG, "Image upload failed: ", e);
-            Toast.makeText(HomeCameraTakePictureActivity.this, "Image upload failed", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(HomeCameraTakePictureActivity.this, "Image upload failed", Toast.LENGTH_SHORT).show();
         });
     }
 }
